@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -68,5 +69,11 @@ public class ArrayListProductDaoTest {
         productDao.save(testProduct);
         productDao.update(updatedTestProduct);
         assertTrue(productDao.getProduct(13l).getCode().equals("test1"));
+    }
+
+    @Test
+    public void findProductsWithString() {
+        List<Product> actual= productDao.findProducts("Samsung II");
+
     }
 }

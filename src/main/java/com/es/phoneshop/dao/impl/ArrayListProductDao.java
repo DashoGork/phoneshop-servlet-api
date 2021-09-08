@@ -6,12 +6,13 @@ import com.es.phoneshop.model.product.Product;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
@@ -105,6 +106,35 @@ public class ArrayListProductDao implements ProductDao {
         }
     }
 
+    @Override
+    public List<Product> findProducts(String name) throws InvalidParameterException {
+        if (name != null) {
+            String words[] = name.split(" ");
+            List<Product> productList = new ArrayList<>();
+            for (String word : words) {
+                productList.addAll(products.stream()
+                        .filter((product -> ArrayListProductDao.isContainExactWord(product.getDescription(), word)))
+                        .collect(Collectors.toList()));
+            }
+            productList = productList.stream().distinct().collect(Collectors.toList());
+            productList = productList.stream().sorted(new Comparator<Product>() {
+                @Override
+                public int compare(Product o1, Product o2) {
+                    int a1 = 0, a2 = 0;
+                    for (String word : words) {
+                        a1 = a1 + o1.getDescription().indexOf(word);
+                        a2 = a2 + o2.getDescription().indexOf(word);
+                    }
+                    if (a1 > a2) return -1;
+                    else if (a1 < a2) return 1;
+                    else return 0;
+                }
+            }).collect(Collectors.toList());
+            return productList;
+        }
+        throw new InvalidParameterException();
+    }
+
     private void saveDefaultSampleProducts() {
         Currency usd = Currency.getInstance("USD");
         save(new Product("sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
@@ -120,6 +150,13 @@ public class ArrayListProductDao implements ProductDao {
         save(new Product("simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
         save(new Product("simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
         save(new Product("simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
+    }
+
+    private static boolean isContainExactWord(String fullString, String partWord) {
+        String pattern = "\\b" + partWord + "\\b";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(fullString);
+        return m.find();
     }
 }
 
