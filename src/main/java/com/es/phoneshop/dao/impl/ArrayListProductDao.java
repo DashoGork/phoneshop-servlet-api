@@ -113,7 +113,7 @@ public class ArrayListProductDao implements ProductDao {
             List<Product> productList = new ArrayList<>();
             for (String word : words) {
                 productList.addAll(products.stream()
-                        .filter((product -> ArrayListProductDao.isContainExactWord(product.getDescription(), word)))
+                        .filter((product -> product.getDescription().toLowerCase().contains(word.toLowerCase())))
                         .collect(Collectors.toList()));
             }
             productList = productList.stream().distinct().collect(Collectors.toList());
@@ -122,8 +122,8 @@ public class ArrayListProductDao implements ProductDao {
                 public int compare(Product o1, Product o2) {
                     int a1 = 0, a2 = 0;
                     for (String word : words) {
-                        a1 = a1 + o1.getDescription().indexOf(word);
-                        a2 = a2 + o2.getDescription().indexOf(word);
+                        a1 = a1 + o1.getDescription().indexOf(word)==-1? -1: 1;
+                        a2 = a2 + o2.getDescription().indexOf(word)==-1? -1: 1;
                     }
                     if (a1 > a2) return -1;
                     else if (a1 < a2) return 1;
@@ -150,13 +150,6 @@ public class ArrayListProductDao implements ProductDao {
         save(new Product("simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
         save(new Product("simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
         save(new Product("simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
-    }
-
-    private static boolean isContainExactWord(String fullString, String partWord) {
-        String pattern = "\\b" + partWord + "\\b";
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(fullString);
-        return m.find();
     }
 }
 
