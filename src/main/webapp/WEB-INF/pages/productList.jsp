@@ -32,10 +32,13 @@
                 <td>
                     <img class="product-tile" src=${product.imageUrl}>
                 </td>
-                <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a></td>
+                <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a>
+                </td>
                 <td class="price">
-                    <fmt:formatNumber value="${product.price}" type="currency"
-                                      currencySymbol="${product.currency.symbol}"/>
+                    <a href="${pageContext.servletContext.contextPath}/priceHistory/${product.id}">
+                        <fmt:formatNumber value="${product.price}" type="currency"
+                                          currencySymbol="${product.currency.symbol}"/>
+                    </a>
                 </td>
             </tr>
         </c:forEach>

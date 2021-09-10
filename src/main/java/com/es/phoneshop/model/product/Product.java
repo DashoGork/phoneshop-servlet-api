@@ -1,8 +1,7 @@
 package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.Objects;
+import java.util.*;
 
 public class Product {
     private Long id;
@@ -14,8 +13,20 @@ public class Product {
     private Currency currency;
     private int stock;
     private String imageUrl;
+    private Map<String,BigDecimal> priceHistory;
 
     public Product() {
+    }
+
+    public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl, Map<String, BigDecimal> priceHistory) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.currency = currency;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.priceHistory = priceHistory;
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
@@ -91,6 +102,18 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setPriceHistory(Map<String, BigDecimal> priceHistory) {
+        this.priceHistory = priceHistory;
+    }
+
+    public Map<String, BigDecimal> getPriceHistory() {
+        return priceHistory;
+    }
+
+    public boolean isValid(){
+        return price != null && stock > 0;
     }
 
     @Override

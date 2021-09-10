@@ -5,7 +5,6 @@ import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.web.ProductListPageParameters;
 
-import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -50,8 +49,7 @@ public class ArrayListProductDao implements ProductDao {
                 Product requiredProduct;
                 requiredProduct = products.stream().
                         filter((product -> id.equals(product.getId())
-                                && product.getPrice() != null
-                                && product.getStock() > 0)).
+                                && product.isValid())).
                         findFirst().orElseThrow(() -> new ProductNotFoundException(id));
                 return requiredProduct;
             } else
@@ -66,7 +64,7 @@ public class ArrayListProductDao implements ProductDao {
     public List<Product> findProducts() {
         readLock.lock();
         try {
-            return products;
+            return products.stream().filter((product -> product.isValid())).collect(Collectors.toList());
         } finally {
             readLock.unlock();
         }

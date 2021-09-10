@@ -10,6 +10,16 @@
     <param-value>true</param-value>
   </context-param>
 
+  <error-page>
+    <location>/WEB-INF/pages/errorProductNotFound.jsp</location>
+    <exception-type>com.es.phoneshop.exceptions.ProductNotFoundException</exception-type>
+  </error-page>
+
+  <error-page>
+    <location>/WEB-INF/pages/error.jsp</location>
+    <error-code>500</error-code>
+  </error-page>
+
   <listener>
     <listener-class>com.es.phoneshop.listener.DemoDataContextServletListener</listener-class>
   </listener>
@@ -34,6 +44,16 @@
     <servlet-class>com.es.phoneshop.web.ProductDetailsPageServlet</servlet-class>
   </servlet>
 
+  <servlet-mapping>
+    <servlet-name>product</servlet-name>
+    <url-pattern>/priceHistory/*</url-pattern>
+  </servlet-mapping>
 
 
+
+
+<!--    <error-page>-->
+<!--      <location>pages/errorProductNotFound.jsp</location>-->
+<!--      <exception-type>com.es.phoneshop.exceptions.ProductNotFoundException</exception-type>-->
+<!--    </error-page>-->
 </web-app>
