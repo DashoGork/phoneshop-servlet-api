@@ -3,6 +3,7 @@ package com.es.phoneshop.dao.impl;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.web.ProductListPageParameters;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
@@ -10,13 +11,13 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 public class ArrayListProductDao implements ProductDao {
+
+    private static volatile ArrayListProductDao arrayListProductDao;
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock = readWriteLock.readLock();
@@ -24,13 +25,25 @@ public class ArrayListProductDao implements ProductDao {
     private List<Product> products;
     private long id;
 
-    public ArrayListProductDao() {
+    private ArrayListProductDao() {
         products = new ArrayList<>();
-        saveDefaultSampleProducts();
+    }
+
+    public static ArrayListProductDao getArrayListProductDao() {
+        ArrayListProductDao result = arrayListProductDao;
+        if (result != null) {
+            return result;
+        }
+        synchronized (ArrayListProductDao.class) {
+            if (arrayListProductDao == null) {
+                arrayListProductDao = new ArrayListProductDao();
+            }
+            return arrayListProductDao;
+        }
     }
 
     @Override
-    public Product getProduct(Long id) throws ProductNotFoundException, InvalidParameterException {
+    public Product getProduct(Long id) throws ProductNotFoundException, IllegalArgumentException {
         readLock.lock();
         try {
             if (id != null) {
@@ -42,13 +55,14 @@ public class ArrayListProductDao implements ProductDao {
                         findFirst().orElseThrow(() -> new ProductNotFoundException(id));
                 return requiredProduct;
             } else
-                throw new InvalidParameterException();
+                throw new IllegalArgumentException();
         } finally {
             readLock.unlock();
         }
     }
 
     @Override
+
     public List<Product> findProducts() {
         readLock.lock();
         try {
@@ -108,48 +122,64 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public List<Product> findProducts(String name) throws InvalidParameterException {
-        if (name != null) {
-            String words[] = name.split(" ");
-            List<Product> productList = new ArrayList<>();
-            for (String word : words) {
-                productList.addAll(products.stream()
-                        .filter((product -> product.getDescription().toLowerCase().contains(word.toLowerCase())))
-                        .collect(Collectors.toList()));
-            }
-            productList = productList.stream().distinct().collect(Collectors.toList());
-            productList = productList.stream().sorted(new Comparator<Product>() {
-                @Override
-                public int compare(Product o1, Product o2) {
-                    int a1 = 0, a2 = 0;
-                    for (String word : words) {
-                        a1 = a1 + o1.getDescription().indexOf(word)==-1? -1: 1;
-                        a2 = a2 + o2.getDescription().indexOf(word)==-1? -1: 1;
-                    }
-                    if (a1 > a2) return -1;
-                    else if (a1 < a2) return 1;
-                    else return 0;
+        readLock.lock();
+        try {
+            if (name != null) {
+                String words[] = name.split(" ");
+                List<Product> productList = new ArrayList<>();
+                for (String word : words) {
+                    productList.addAll(products.stream()
+                            .filter((product -> product.getDescription().toLowerCase().contains(word.toLowerCase())))
+                            .collect(Collectors.toList()));
                 }
-            }).collect(Collectors.toList());
-            return productList;
+                productList = productList.stream().distinct().collect(Collectors.toList());
+                productList = productList.stream().sorted(new Comparator<Product>() {
+                    @Override
+                    public int compare(Product o1, Product o2) {
+                        int a1 = 0, a2 = 0;
+                        for (String word : words) {
+                            a1 = a1 + o1.getDescription().indexOf(word) == -1 ? -1 : 1;
+                            a2 = a2 + o2.getDescription().indexOf(word) == -1 ? -1 : 1;
+                        }
+                        if (a1 > a2) return -1;
+                        else if (a1 < a2) return 1;
+                        else return 0;
+                    }
+                }).collect(Collectors.toList());
+                return productList;
+            }
+            throw new InvalidParameterException();
+        } finally {
+            readLock.unlock();
         }
-        throw new InvalidParameterException();
+
     }
 
-    private void saveDefaultSampleProducts() {
-        Currency usd = Currency.getInstance("USD");
-        save(new Product("sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
-        save(new Product("sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg"));
-        save(new Product("sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg"));
-        save(new Product("iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone.jpg"));
-        save(new Product("iphone6", "Apple iPhone 6", new BigDecimal(1000), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone%206.jpg"));
-        save(new Product("htces4g", "HTC EVO Shift 4G", new BigDecimal(320), usd, 3, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/HTC/HTC%20EVO%20Shift%204G.jpg"));
-        save(new Product("sec901", "Sony Ericsson C901", new BigDecimal(420), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Ericsson%20C901.jpg"));
-        save(new Product("xperiaxz", "Sony Xperia XZ", new BigDecimal(120), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Xperia%20XZ.jpg"));
-        save(new Product("nokia3310", "Nokia 3310", new BigDecimal(70), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Nokia/Nokia%203310.jpg"));
-        save(new Product("palmp", "Palm Pixi", new BigDecimal(170), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Palm/Palm%20Pixi.jpg"));
-        save(new Product("simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
-        save(new Product("simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
-        save(new Product("simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
+    @Override
+    public List<Product> findProducts(String name, String sortField, String sortOrder) throws InvalidParameterException {
+        readLock.lock();
+        try {
+            List<Product> listToSort = findProducts(name);
+            listToSort = listToSort.stream().sorted(new Comparator<Product>() {
+                @Override
+                public int compare(Product o1, Product o2) {
+                    if (sortField.equals(ProductListPageParameters.sort.getValues()[0])) {
+                        if (sortOrder.equals(ProductListPageParameters.order.getValues()[0]))
+                            return o1.getDescription().compareTo(o2.getDescription());
+                        else
+                            return o2.getDescription().compareTo(o1.getDescription());
+                    } else {
+                        if (sortOrder.equals(ProductListPageParameters.order.getValues()[0]))
+                            return o1.getPrice().compareTo(o2.getPrice());
+                        else
+                            return o2.getPrice().compareTo(o1.getPrice());
+                    }
+                }
+            }).collect(Collectors.toList());
+            return listToSort;
+        } finally {
+            readLock.unlock();
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ProductDao {
     Product getProduct(Long id) throws ProductNotFoundException;
+    List<Product> findProducts(String name,String sortField, String sortOrder) throws InvalidParameterException;
     List<Product> findProducts(String name) throws InvalidParameterException;
     List<Product> findProducts();
     void save(Product product);

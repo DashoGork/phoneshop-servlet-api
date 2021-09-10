@@ -16,15 +16,15 @@ import static org.junit.Assert.*;
 
 public class ArrayListProductDaoTest {
     private ProductDao productDao;
-    Currency usd ;
+    Currency usd;
     Product testProduct;
     Product updatedTestProduct;
 
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
-        testProduct=new Product("test", "test", new BigDecimal(150), usd, 40, "test");
-        updatedTestProduct=new Product(13L,"test1", "test1", new BigDecimal(150), usd, 40, "test1");
+        productDao = ArrayListProductDao.getArrayListProductDao();
+        testProduct = new Product("test", "test", new BigDecimal(150), usd, 40, "test");
+        updatedTestProduct = new Product(13L, "test1", "test1", new BigDecimal(150), usd, 40, "test1");
         usd = Currency.getInstance("USD");
     }
 
@@ -56,7 +56,8 @@ public class ArrayListProductDaoTest {
 
 
     @Rule
-    public ExpectedException expectedException=ExpectedException.none();
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void delete() throws ProductNotFoundException {
         productDao.delete(0l);
@@ -73,7 +74,13 @@ public class ArrayListProductDaoTest {
 
     @Test
     public void findProductsWithString() {
-        List<Product> actual= productDao.findProducts("Samsung II");
+        List<Product> actual = productDao.findProducts("Samsung II");
+        assertTrue(actual.contains(new Product(1l, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg")));
+    }
 
+    @Test
+    public void findProductsWithStringAndOrder() {
+        List<Product> actual = productDao.findProducts("Samsung II", "price", "asc");
+        assertTrue(actual.contains(new Product(0l,"sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg")));
     }
 }
