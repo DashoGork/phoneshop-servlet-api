@@ -60,7 +60,6 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-
     public List<Product> findProducts() {
         readLock.lock();
         try {
@@ -161,7 +160,7 @@ public class ArrayListProductDao implements ProductDao {
             listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                 @Override
                 public int compare(Product o1, Product o2) {
-                    if (sortField.equals(ProductListPageParameters.sort.getValues()[0])) {
+                    if ( sortField.equals(ProductListPageParameters.sort.getValues()[0])) {
                         if (sortOrder.equals(ProductListPageParameters.order.getValues()[0]))
                             return o1.getDescription().compareTo(o2.getDescription());
                         else

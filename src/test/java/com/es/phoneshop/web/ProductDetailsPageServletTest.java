@@ -11,10 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,19 +35,21 @@ public class ProductDetailsPageServletTest {
     @Mock
     ServletConfig config;
     @Mock
+    ServletContext servletContext;
+    @Mock
     ServletContextEvent servletContextEvent;
     private ProductDetailsPageServlet servlet;
     private ProductDao productDao;
+    private DemoDataContextServletListener demoDataContextServletListener;
 
     @Before
     public void setup() throws ServletException {
         servlet = new ProductDetailsPageServlet();
-        productDao=ArrayListProductDao.getArrayListProductDao();
-        Currency usd = Currency.getInstance("USD");
-        Map<String, BigDecimal> priceHistory=new HashMap<>();
-        priceHistory.put("10, Jan, 2019", BigDecimal.valueOf(600));
-        priceHistory.put("10, Jan, 2020", BigDecimal.valueOf(500));
-        productDao.save(new Product(1l, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg",priceHistory));
+        productDao = ArrayListProductDao.getArrayListProductDao();
+        demoDataContextServletListener=new DemoDataContextServletListener();
+        servletContextEvent=new ServletContextEvent(servletContext);
+        when(servletContextEvent.getServletContext().getInitParameter("initParamDemoDataListener")).thenReturn("true");
+        demoDataContextServletListener.contextInitialized(servletContextEvent);
         servlet.init(config);
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
     }
@@ -58,14 +57,11 @@ public class ProductDetailsPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         when(request.getPathInfo()).thenReturn("/0");
-        when(request.getPathInfo()).thenReturn("/0");
-       when(request.getRequestURI()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("");
         servlet.doGet(request, response);
-
         verify(requestDispatcher).forward(request, response);
-        verify(request).setAttribute(eq("product"),any());
+        verify(request).setAttribute(eq("product"), any());
     }
-
 
 
 }

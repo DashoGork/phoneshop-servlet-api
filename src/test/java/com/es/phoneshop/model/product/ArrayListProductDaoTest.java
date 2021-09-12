@@ -30,7 +30,7 @@ public class ArrayListProductDaoTest {
 
     @Test
     public void testFindProductsNoResults() {
-        assertFalse(productDao.findProducts().isEmpty());
+        assertTrue(productDao.findProducts().isEmpty());
     }
 
     @Test
