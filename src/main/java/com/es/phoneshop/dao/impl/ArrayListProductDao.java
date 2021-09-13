@@ -4,6 +4,8 @@ import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.web.ProductListPageParameters;
+import com.es.phoneshop.web.SortOptions;
+import com.es.phoneshop.web.SortOrder;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -157,20 +159,13 @@ public class ArrayListProductDao implements ProductDao {
         readLock.lock();
         try {
             List<Product> listToSort = findProducts(name);
+            Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
+            Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
+            Comparator comparator = sortField.equals(SortOptions.description.name()) ? descriptionComparator : priceComparator;
             listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                 @Override
                 public int compare(Product o1, Product o2) {
-                    if ( sortField.equals(ProductListPageParameters.sort.getValues()[0])) {
-                        if (sortOrder.equals(ProductListPageParameters.order.getValues()[0]))
-                            return o1.getDescription().compareTo(o2.getDescription());
-                        else
-                            return o2.getDescription().compareTo(o1.getDescription());
-                    } else {
-                        if (sortOrder.equals(ProductListPageParameters.order.getValues()[0]))
-                            return o1.getPrice().compareTo(o2.getPrice());
-                        else
-                            return o2.getPrice().compareTo(o1.getPrice());
-                    }
+                    return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder).getValue();
                 }
             }).collect(Collectors.toList());
             return listToSort;
