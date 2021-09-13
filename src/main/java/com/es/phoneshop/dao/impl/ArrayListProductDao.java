@@ -3,7 +3,6 @@ package com.es.phoneshop.dao.impl;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.web.ProductListPageParameters;
 import com.es.phoneshop.web.SortOptions;
 import com.es.phoneshop.web.SortOrder;
 
@@ -135,14 +134,8 @@ public class ArrayListProductDao implements ProductDao {
                 productList = productList.stream().sorted(new Comparator<Product>() {
                     @Override
                     public int compare(Product o1, Product o2) {
-                        int a1 = 0, a2 = 0;
-                        for (String word : words) {
-                            a1 = a1 + o1.getDescription().indexOf(word) == -1 ? -1 : 1;
-                            a2 = a2 + o2.getDescription().indexOf(word) == -1 ? -1 : 1;
-                        }
-                        if (a1 > a2) return -1;
-                        else if (a1 < a2) return 1;
-                        else return 0;
+                        return getNumberOfWordsInjections(words, o2.getDescription())
+                                - getNumberOfWordsInjections(words, o1.getDescription());
                     }
                 }).collect(Collectors.toList());
                 return productList;
@@ -172,6 +165,10 @@ public class ArrayListProductDao implements ProductDao {
         } finally {
             readLock.unlock();
         }
+    }
+
+    private int getNumberOfWordsInjections(String[] searchWords, String searchContainer) {
+        return Arrays.stream(searchWords).reduce(0, (a, b) -> (searchContainer.contains(b) ? 1 : 0) + a, Integer::sum);
     }
 }
 
