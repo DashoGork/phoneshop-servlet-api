@@ -15,20 +15,20 @@ public class ProductListPageServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        arrayListProductDao=ArrayListProductDao.getArrayListProductDao();
+        arrayListProductDao = ArrayListProductDao.getArrayListProductDao();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String query=request.getParameter(ProductListPageParameters.query.name());
-        String sortField=request.getParameter(ProductListPageParameters.sort.name());
-        String sortOrder=request.getParameter(ProductListPageParameters.order.name());
+        String query = request.getParameter(ProductListPageParameters.query.name());
+        String sortField = request.getParameter(ProductListPageParameters.sort.name());
+        String sortOrder = request.getParameter(ProductListPageParameters.order.name());
 
-        if(query!=null){
-            if(sortField!=null && sortOrder!=null)
-            request.setAttribute("products",arrayListProductDao.findProducts(query,sortField,sortOrder));
-            else request.setAttribute("products",arrayListProductDao.findProducts(query));
-        }else
+        if (query != null) {
+            if (sortField != null && sortOrder != null)
+                request.setAttribute("products", arrayListProductDao.findProducts(query, sortField, sortOrder));
+            else request.setAttribute("products", arrayListProductDao.findProducts(query));
+        } else
             request.setAttribute("products", arrayListProductDao.findProducts());
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }

@@ -23,9 +23,9 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getPathInfo();
         request.setAttribute("product", productDao.getProduct(Long.valueOf(productId.substring(1))));
-        if(request.getRequestURI().contains("priceHistory")){
+        if (request.getRequestURI().contains("priceHistory")) {
             request.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(request, response);
-        }else{
+        } else {
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
         }
 

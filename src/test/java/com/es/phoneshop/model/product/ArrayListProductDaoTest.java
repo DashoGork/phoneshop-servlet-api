@@ -3,26 +3,48 @@ package com.es.phoneshop.model.product;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
+import com.es.phoneshop.listener.DemoDataContextServletListener;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ArrayListProductDaoTest {
+
+    @Mock
+    ServletContextEvent servletContextEvent;
+
+    @Mock
+    ServletContext servletContext;
+
+    private DemoDataContextServletListener demoDataContextServletListener;
     private ProductDao productDao;
-    Currency usd;
-    Product testProduct;
-    Product updatedTestProduct;
+    private Currency usd;
+    private Product testProduct;
+    private Product updatedTestProduct;
 
     @Before
     public void setup() {
         productDao = ArrayListProductDao.getArrayListProductDao();
+        demoDataContextServletListener = new DemoDataContextServletListener();
+        servletContextEvent = new ServletContextEvent(servletContext);
+        when(servletContextEvent.getServletContext().getInitParameter("initParamDemoDataListener")).thenReturn("true");
+        demoDataContextServletListener.contextInitialized(servletContextEvent);
         testProduct = new Product("test", "test", new BigDecimal(150), usd, 40, "test");
         updatedTestProduct = new Product(13L, "test1", "test1", new BigDecimal(150), usd, 40, "test1");
         usd = Currency.getInstance("USD");
@@ -80,7 +102,11 @@ public class ArrayListProductDaoTest {
 
     @Test
     public void findProductsWithStringAndOrder() {
+        Map<String, BigDecimal> priceHistory = new HashMap<>();
+        priceHistory.put("10, Jan, 2019", BigDecimal.valueOf(600));
+        priceHistory.put("10, Jan, 2020", BigDecimal.valueOf(500));
+
         List<Product> actual = productDao.findProducts("Samsung II", "price", "asc");
-        assertTrue(actual.contains(new Product(0l,"sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg")));
+        assertTrue(actual.get(0).equals(new Product(2l, "sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg", priceHistory)));
     }
 }

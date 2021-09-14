@@ -2,9 +2,7 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
-import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
-import com.es.phoneshop.model.product.Product;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +13,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -33,11 +27,12 @@ public class ProductDetailsPageServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    ServletConfig config;
+    private ServletConfig config;
     @Mock
-    ServletContext servletContext;
+    private ServletContext servletContext;
     @Mock
-    ServletContextEvent servletContextEvent;
+    private ServletContextEvent servletContextEvent;
+
     private ProductDetailsPageServlet servlet;
     private ProductDao productDao;
     private DemoDataContextServletListener demoDataContextServletListener;
@@ -46,8 +41,8 @@ public class ProductDetailsPageServletTest {
     public void setup() throws ServletException {
         servlet = new ProductDetailsPageServlet();
         productDao = ArrayListProductDao.getArrayListProductDao();
-        demoDataContextServletListener=new DemoDataContextServletListener();
-        servletContextEvent=new ServletContextEvent(servletContext);
+        demoDataContextServletListener = new DemoDataContextServletListener();
+        servletContextEvent = new ServletContextEvent(servletContext);
         when(servletContextEvent.getServletContext().getInitParameter("initParamDemoDataListener")).thenReturn("true");
         demoDataContextServletListener.contextInitialized(servletContextEvent);
         servlet.init(config);
