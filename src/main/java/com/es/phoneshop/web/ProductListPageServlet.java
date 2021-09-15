@@ -1,6 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.enums.ProductListPageParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,11 +26,13 @@ public class ProductListPageServlet extends HttpServlet {
         String sortOrder = request.getParameter(ProductListPageParameters.order.name());
 
         if (query != null) {
-            if (sortField != null && sortOrder != null)
+            if (sortField != null && sortOrder != null) {
                 request.setAttribute("products", arrayListProductDao.findProducts(query, sortField, sortOrder));
-            else request.setAttribute("products", arrayListProductDao.findProducts(query));
-        } else
+            } else {
+                request.setAttribute("products", arrayListProductDao.findProducts(query));
+            }
+        } else {
             request.setAttribute("products", arrayListProductDao.findProducts());
-        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        }request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }

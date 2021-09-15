@@ -4,5 +4,5 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <tags:master pageTitle="Product List">
-    Product with id =   can't be found.
+    ${requestScope['javax.servlet.error.message']}
 </tags:master>

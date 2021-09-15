@@ -6,7 +6,7 @@
 <jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
 <tags:master pageTitle="Product List">
     <p>
-        ${product.description}
+            ${product.description}
     </p>
     <table>
         <thead>
@@ -15,6 +15,7 @@
             <td>Description
                 <tags:sortList sort="description" order="asc"></tags:sortList>
                 <tags:sortList sort="description" order="desc"></tags:sortList>
+
             </td>
             <td class="price">Price
                 <tags:sortList sort="price" order="asc"></tags:sortList>
@@ -24,15 +25,16 @@
         </tr>
         </thead>
 
-            <tr>
-                <td>
-                    <img class="product-tile" src=${product.imageUrl}>
-                </td>
-                <td class="price">
-                    <fmt:formatNumber value="${product.price}" type="currency"
-                                      currencySymbol="${product.currency.symbol}"/>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <img class="product-tile" src=${product.imageUrl}>
+            </td>
+            <td> ${product.description}</td>
+            <td class="price">
+                <fmt:formatNumber value="${product.price}" type="currency"
+                                  currencySymbol="${product.currency.symbol}"/>
+            </td>
+        </tr>
 
     </table>
 </tags:master>

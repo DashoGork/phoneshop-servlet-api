@@ -1,8 +1,8 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.enums;
 
 public enum SortOrder {
-    asc(-1),
-    desc(1);
+    ASC(1),
+    DESC(-1);
 
     private int value;
 

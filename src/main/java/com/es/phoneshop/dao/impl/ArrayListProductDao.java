@@ -3,8 +3,8 @@ package com.es.phoneshop.dao.impl;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.web.SortOptions;
-import com.es.phoneshop.web.SortOrder;
+import com.es.phoneshop.enums.SortOptions;
+import com.es.phoneshop.enums.SortOrder;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -51,7 +51,7 @@ public class ArrayListProductDao implements ProductDao {
                 requiredProduct = products.stream().
                         filter((product -> id.equals(product.getId())
                                 && product.isValid())).
-                        findFirst().orElseThrow(() -> new ProductNotFoundException("Product with such id wasn't found. id = " + id));
+                        findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id = %d  can't be found.", id)));
                 return requiredProduct;
             } else
                 throw new IllegalArgumentException();
@@ -154,11 +154,16 @@ public class ArrayListProductDao implements ProductDao {
             List<Product> listToSort = findProducts(name);
             Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
             Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
-            Comparator comparator = sortField.equals(SortOptions.description.name()) ? descriptionComparator : priceComparator;
+            Comparator comparator;
+            if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
+                comparator = descriptionComparator;
+            } else {
+                comparator = priceComparator;
+            }
             listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                 @Override
                 public int compare(Product o1, Product o2) {
-                    return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder).getValue();
+                    return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder.toUpperCase(Locale.ROOT)).getValue();
                 }
             }).collect(Collectors.toList());
             return listToSort;

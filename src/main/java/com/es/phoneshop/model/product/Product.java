@@ -17,12 +17,12 @@ public class Product {
     private Currency currency;
     private int stock;
     private String imageUrl;
-    private Map<String, BigDecimal> priceHistory;
+    private PriceHistory priceHistory;
 
     public Product() {
     }
 
-    public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl, Map<String, BigDecimal> priceHistory) {
+    public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl, Map<GregorianCalendar, BigDecimal> priceHistory) {
         this.id = id;
         this.code = code;
         this.description = description;
@@ -30,7 +30,8 @@ public class Product {
         this.currency = currency;
         this.stock = stock;
         this.imageUrl = imageUrl;
-        this.priceHistory = priceHistory;
+        this.priceHistory =new PriceHistory();
+        this.priceHistory.setPriceHistory(priceHistory);
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
@@ -108,12 +109,12 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public void setPriceHistory(Map<String, BigDecimal> priceHistory) {
-        this.priceHistory = priceHistory;
+    public void setPriceHistory(Map<GregorianCalendar, BigDecimal> priceHistory) {
+        this.priceHistory.setPriceHistory(priceHistory);
     }
 
-    public Map<String, BigDecimal> getPriceHistory() {
-        return priceHistory;
+    public Map<GregorianCalendar, BigDecimal> getPriceHistory() {
+        return priceHistory.getPriceHistory();
     }
 
     public boolean isValid() {

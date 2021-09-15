@@ -1,4 +1,4 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.enums;
 
 public enum ProductListPageParameters {
     query,

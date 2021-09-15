@@ -15,10 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -102,9 +99,9 @@ public class ArrayListProductDaoTest {
 
     @Test
     public void findProductsWithStringAndOrder() {
-        Map<String, BigDecimal> priceHistory = new HashMap<>();
-        priceHistory.put("10, Jan, 2019", BigDecimal.valueOf(600));
-        priceHistory.put("10, Jan, 2020", BigDecimal.valueOf(500));
+        Map<GregorianCalendar, BigDecimal> priceHistory = new HashMap<>();
+        priceHistory.put(new GregorianCalendar(2017,10,20), BigDecimal.valueOf(600));
+        priceHistory.put(new GregorianCalendar(2019,10,22), BigDecimal.valueOf(500));
 
         List<Product> actual = productDao.findProducts("Samsung II", "price", "asc");
         assertTrue(actual.get(0).equals(new Product(2l, "sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg", priceHistory)));

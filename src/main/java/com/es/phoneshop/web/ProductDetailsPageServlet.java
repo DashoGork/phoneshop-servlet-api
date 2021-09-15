@@ -28,6 +28,5 @@ public class ProductDetailsPageServlet extends HttpServlet {
         } else {
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
         }
-
     }
 }
