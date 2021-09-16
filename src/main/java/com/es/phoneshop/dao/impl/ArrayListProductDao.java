@@ -157,8 +157,10 @@ public class ArrayListProductDao implements ProductDao {
             Comparator comparator;
             if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
                 comparator = descriptionComparator;
-            } else {
+            } else if(SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
                 comparator = priceComparator;
+            }else{
+                throw new InvalidParameterException();
             }
             listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                 @Override
