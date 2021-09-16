@@ -1,21 +1,37 @@
 package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.Objects;
+import java.util.*;
 
 public class Product {
     private Long id;
     private String code;
     private String description;
-    /** null means there is no price because the product is outdated or new */
+    /**
+     * null means there is no price because the product is outdated or new
+     */
     private BigDecimal price;
-    /** can be null if the price is null */
+    /**
+     * can be null if the price is null
+     */
     private Currency currency;
     private int stock;
     private String imageUrl;
+    private PriceHistory priceHistory;
 
     public Product() {
+    }
+
+    public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl, Map<GregorianCalendar, BigDecimal> priceHistory) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.price = price;
+        this.currency = currency;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.priceHistory =new PriceHistory();
+        this.priceHistory.setPriceHistory(priceHistory);
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
@@ -93,7 +109,15 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isValid(){
+    public void setPriceHistory(Map<GregorianCalendar, BigDecimal> priceHistory) {
+        this.priceHistory.setPriceHistory(priceHistory);
+    }
+
+    public Map<GregorianCalendar, BigDecimal> getPriceHistory() {
+        return priceHistory.getPriceHistory();
+    }
+
+    public boolean isValid() {
         return price != null && stock > 0;
     }
 
