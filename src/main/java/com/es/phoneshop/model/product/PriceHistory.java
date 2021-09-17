@@ -21,7 +21,7 @@ public class PriceHistory {
     }
 
     public void addPriceHistory(GregorianCalendar date, BigDecimal price) {
-        priceHistory.put(date,price);
+        priceHistory.put(date, price);
     }
 
     @Override

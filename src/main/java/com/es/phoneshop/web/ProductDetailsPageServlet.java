@@ -28,12 +28,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
         super.init();
         productDao = ArrayListProductDao.getArrayListProductDao();
         cartService = DefaultCartService.getDefaultCartService();
-        viewHistoryService= ViewHistoryServiceImplementation.getViewHistoryServiceImplementation();
+        viewHistoryService = ViewHistoryServiceImplementation.getViewHistoryServiceImplementation();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        viewHistoryService.add(viewHistoryService.getViewHistory(request),productDao.getProduct(getProductId(request)));
+        viewHistoryService.add(viewHistoryService.getViewHistory(request), productDao.getProduct(getProductId(request)));
         request.setAttribute("product", productDao.getProduct(getProductId(request)));
         request.setAttribute("cart", cartService.getCart(request));
         if (request.getRequestURI().contains("priceHistory")) {

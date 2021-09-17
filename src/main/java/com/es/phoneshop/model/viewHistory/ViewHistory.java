@@ -12,7 +12,7 @@ public class ViewHistory {
         this.productHistory = new LinkedList<>();
     }
 
-    public void addProductInHistory(Product product){
+    public void addProductInHistory(Product product) {
         productHistory.add(product);
     }
 

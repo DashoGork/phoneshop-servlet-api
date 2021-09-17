@@ -4,15 +4,21 @@ import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ViewHistoryServiceImplementation implements ViewHistoryService{
+public class ViewHistoryServiceImplementation implements ViewHistoryService {
 
     private ViewHistory history;
-    private static ViewHistoryServiceImplementation viewHistoryServiceImplementation;
-    private static final String VIEW_HISTORY_SESSION_ATTRIBUTE=ViewHistoryServiceImplementation.class.getName()+".viewHistory";
+    private static volatile ViewHistoryServiceImplementation viewHistoryServiceImplementation;
+    private static final String VIEW_HISTORY_SESSION_ATTRIBUTE = ViewHistoryServiceImplementation.class.getName() + ".viewHistory";
+
+    private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private Lock readLock = readWriteLock.readLock();
+    private Lock writeLock = readWriteLock.writeLock();
 
     private ViewHistoryServiceImplementation() {
-
         history = new ViewHistory();
     }
 
@@ -31,22 +37,32 @@ public class ViewHistoryServiceImplementation implements ViewHistoryService{
 
     @Override
     public synchronized ViewHistory getViewHistory(HttpServletRequest request) {
-        ViewHistory viewHistory=(ViewHistory) request.getSession().getAttribute(VIEW_HISTORY_SESSION_ATTRIBUTE);
-        if(viewHistory==null){
-            viewHistory=new ViewHistory();
-            request.getSession().setAttribute(VIEW_HISTORY_SESSION_ATTRIBUTE,viewHistory);
+        readLock.lock();
+        try {
+            ViewHistory viewHistory = (ViewHistory) request.getSession().getAttribute(VIEW_HISTORY_SESSION_ATTRIBUTE);
+            if (viewHistory == null) {
+                viewHistory = new ViewHistory();
+                request.getSession().setAttribute(VIEW_HISTORY_SESSION_ATTRIBUTE, viewHistory);
+            }
+            return viewHistory;
+        } finally {
+            readLock.unlock();
         }
-        return viewHistory;
     }
 
     @Override
-    public synchronized void add(ViewHistory history, Product product) {
-        List<Product> viewHistory=history.getViewHistory();
-        if(!viewHistory.contains(product)){
-            history.getViewHistory().add(0,product);
-            if(history.getViewHistory().size()>3){
-                history.getViewHistory().remove(3);
+    public void add(ViewHistory history, Product product) {
+        writeLock.lock();
+        try {
+            List<Product> viewHistory = history.getViewHistory();
+            if (!viewHistory.contains(product)) {
+                history.getViewHistory().add(0, product);
+                if (history.getViewHistory().size() > 3) {
+                    history.getViewHistory().remove(3);
+                }
             }
+        } finally {
+            writeLock.unlock();
         }
     }
 }

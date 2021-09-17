@@ -13,6 +13,6 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return product.getDescription()+" "+quantity;
+        return product.getDescription() + " " + quantity;
     }
 }
