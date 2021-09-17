@@ -2,6 +2,8 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductListPageParameters;
+import com.es.phoneshop.model.viewHistory.ViewHistoryService;
+import com.es.phoneshop.model.viewHistory.ViewHistoryServiceImplementation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +14,13 @@ import java.io.IOException;
 public class ProductListPageServlet extends HttpServlet {
 
     private ArrayListProductDao arrayListProductDao;
+    private ViewHistoryService viewHistoryService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         arrayListProductDao = ArrayListProductDao.getArrayListProductDao();
+        viewHistoryService = ViewHistoryServiceImplementation.getViewHistoryServiceImplementation();
     }
 
     @Override
@@ -24,7 +28,7 @@ public class ProductListPageServlet extends HttpServlet {
         String query = request.getParameter(ProductListPageParameters.QUERY.name().toLowerCase());
         String sortField = request.getParameter(ProductListPageParameters.SORT.name().toLowerCase());
         String sortOrder = request.getParameter(ProductListPageParameters.ORDER.name().toLowerCase());
-
+        request.setAttribute("viewHistory", viewHistoryService.getViewHistory(request));
         if (query != null) {
             if (sortField != null && sortOrder != null) {
                 request.setAttribute("products", arrayListProductDao.findProducts(query, sortField, sortOrder));
@@ -33,6 +37,7 @@ public class ProductListPageServlet extends HttpServlet {
             }
         } else {
             request.setAttribute("products", arrayListProductDao.findProducts());
-        }request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
+        }
+        request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 }

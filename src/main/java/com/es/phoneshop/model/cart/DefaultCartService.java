@@ -2,17 +2,19 @@ package com.es.phoneshop.model.cart;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.Product;
 
-public class DefaultCartService implements CartService{
+import javax.servlet.http.HttpServletRequest;
 
-    private Cart cart;
+public class DefaultCartService implements CartService {
+
     private ProductDao productDao;
     private static DefaultCartService defaultCartService;
+    private static final String CART_SESSION_ATTRIBUTE=DefaultCartService.class.getName()+".cart";
 
     private DefaultCartService() {
-        cart=new Cart();
-        productDao=ArrayListProductDao.getArrayListProductDao();
+        productDao = ArrayListProductDao.getArrayListProductDao();
     }
 
     public static DefaultCartService getDefaultCartService() {
@@ -29,14 +31,22 @@ public class DefaultCartService implements CartService{
     }
 
     @Override
-    public Cart getCart() {
+    public synchronized Cart getCart(HttpServletRequest request) {
+        Cart cart=(Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
+        if(cart==null){
+            request.getSession().setAttribute(CART_SESSION_ATTRIBUTE,new Cart());
+        }
         return cart;
     }
 
     @Override
-    public void add(Product product, int quantity) {
+    public synchronized void add(Cart cart,Product product, int quantity) throws OutOfStockException {
         productDao.getProduct(product.getId());
-        CartItem cartItem=new CartItem(productDao.getProduct(product.getId()),quantity);
-        cart.getItems().add(cartItem);
+        if (productDao.getProduct(product.getId()).getStock() < quantity) {
+            throw new OutOfStockException("Not enough stock.");
+        } else {
+            CartItem cartItem = new CartItem(productDao.getProduct(product.getId()), quantity);
+            cart.getItems().add(cartItem);
+        }
     }
 }

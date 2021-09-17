@@ -11,6 +11,18 @@
     <p>
             ${cart}
     </p>
+    <p class="success">
+            <c:if test="${not empty param.message}">
+                <c:if  test="${empty error}">
+                    ${param.message}
+                </c:if>
+            </c:if>
+    </p>
+    <p class="error">
+        <c:if test="${not empty error}">
+            ${error}
+        </c:if>
+    </p>
     <form method="post">
         <table>
             <thead>
@@ -40,9 +52,12 @@
                     <fmt:formatNumber value="${product.price}" type="currency"
                                       currencySymbol="${product.currency.symbol}"/>
                 </td>
-                <td>
-                   <input name="quantity">
+                <td class="error">
+                   <input name="quantity" value="${not empty param.error? param.quantity : 1}">
                     <button>Add to cart</button>
+                    <c:if test="${not empty error}">
+                        ${error}
+                    </c:if>
                 </td>
             </tr>
 
