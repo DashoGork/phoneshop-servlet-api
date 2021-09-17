@@ -8,33 +8,45 @@
     <p>
             ${product.description}
     </p>
-    <table>
-        <thead>
-        <tr>
-            <td>Image</td>
-            <td>Description
-                <tags:sortList sort="description" order="asc"></tags:sortList>
-                <tags:sortList sort="description" order="desc"></tags:sortList>
+    <p>
+            ${cart}
+    </p>
+    <form method="post">
+        <table>
+            <thead>
+            <tr>
+                <td>Image</td>
+                <td>Description
+                    <tags:sortList sort="description" order="asc"></tags:sortList>
+                    <tags:sortList sort="description" order="desc"></tags:sortList>
 
-            </td>
-            <td class="price">Price
-                <tags:sortList sort="price" order="asc"></tags:sortList>
-                <tags:sortList sort="price" order="desc"></tags:sortList>
+                </td>
+                <td class="price">Price
+                    <tags:sortList sort="price" order="asc"></tags:sortList>
+                    <tags:sortList sort="price" order="desc"></tags:sortList>
 
-            </td>
-        </tr>
-        </thead>
+                </td>
+                <td>Quantity
+                </td>
+            </tr>
+            </thead>
 
-        <tr>
-            <td>
-                <img class="product-tile" src=${product.imageUrl}>
-            </td>
-            <td> ${product.description}</td>
-            <td class="price">
-                <fmt:formatNumber value="${product.price}" type="currency"
-                                  currencySymbol="${product.currency.symbol}"/>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <img class="product-tile" src=${product.imageUrl}>
+                </td>
+                <td> ${product.description}</td>
+                <td class="price">
+                    <fmt:formatNumber value="${product.price}" type="currency"
+                                      currencySymbol="${product.currency.symbol}"/>
+                </td>
+                <td>
+                   <input name="quantity">
+                    <button>Add to cart</button>
+                </td>
+            </tr>
 
-    </table>
+        </table>
+    </form>
+
 </tags:master>
