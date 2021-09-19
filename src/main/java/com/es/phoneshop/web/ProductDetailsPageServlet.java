@@ -61,7 +61,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
             doGet(request, response);
         }
-
     }
 
     private long getProductId(HttpServletRequest request) {
