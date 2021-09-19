@@ -18,6 +18,10 @@ public class Cart {
         return items;
     }
 
+    public void setItem(CartItem cartItem) {
+        items.add(cartItem);
+    }
+
     @Override
     public String toString() {
         return items.toString();
