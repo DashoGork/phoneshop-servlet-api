@@ -46,7 +46,7 @@
 
   <servlet-mapping>
     <servlet-name>product</servlet-name>
-    <url-pattern>/priceHistory/*</url-pattern>
+    <url-pattern>/pricehistory/*</url-pattern>
   </servlet-mapping>
 
 

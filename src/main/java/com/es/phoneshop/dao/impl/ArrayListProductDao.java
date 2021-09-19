@@ -152,24 +152,30 @@ public class ArrayListProductDao implements ProductDao {
     public List<Product> findProducts(String name, String sortField, String sortOrder) throws InvalidParameterException {
         readLock.lock();
         try {
-            List<Product> listToSort = findProducts(name);
-            Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
-            Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
-            Comparator comparator;
-            if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
-                comparator = descriptionComparator;
-            } else if(SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
-                comparator = priceComparator;
-            }else{
-                throw new InvalidParameterException("Invalid sort field.");
-            }
-            listToSort = listToSort.stream().sorted(new Comparator<Product>() {
-                @Override
-                public int compare(Product o1, Product o2) {
-                    return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder.toUpperCase(Locale.ROOT)).getValue();
+            if (name != null) {
+                List<Product> listToSort = findProducts(name);
+                if (sortField != null & sortOrder != null) {
+                    Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
+                    Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
+                    Comparator comparator;
+                    if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
+                        comparator = descriptionComparator;
+                    } else if (SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
+                        comparator = priceComparator;
+                    } else {
+                        throw new InvalidParameterException("Invalid sort field.");
+                    }
+                    listToSort = listToSort.stream().sorted(new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder.toUpperCase(Locale.ROOT)).getValue();
+                        }
+                    }).collect(Collectors.toList());
                 }
-            }).collect(Collectors.toList());
-            return listToSort;
+                return listToSort;
+            } else{
+                return findProducts();
+            }
         } finally {
             readLock.unlock();
         }

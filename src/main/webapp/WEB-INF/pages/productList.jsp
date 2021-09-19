@@ -35,7 +35,7 @@
                 <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a>
                 </td>
                 <td class="price">
-                    <a href="${pageContext.servletContext.contextPath}/priceHistory/${product.id}">
+                    <a href="${pageContext.servletContext.contextPath}/pricehistory/${product.id}">
                         <fmt:formatNumber value="${product.price}" type="currency"
                                           currencySymbol="${product.currency.symbol}"/>
                     </a>
@@ -54,7 +54,7 @@
             <td class="price">Price</td>
         </tr>
         </thead>
-        <c:forEach var="product" items="${viewHistory.getViewHistory()}">
+        <c:forEach var="product" items="${viewhistory.getViewHistory()}">
             <tr>
                 <td>
                     <img class="product-tile" src=${product.imageUrl}>

@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
+import com.es.phoneshop.enums.ProductListPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.DefaultCartService;
@@ -34,9 +35,9 @@ public class ProductDetailsPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         viewHistoryService.add(viewHistoryService.getViewHistory(request), productDao.getProduct(getProductId(request)));
-        request.setAttribute("product", productDao.getProduct(getProductId(request)));
-        request.setAttribute("cart", cartService.getCart(request));
-        if (request.getRequestURI().contains("priceHistory")) {
+        request.setAttribute(ProductDetailsPageParameters.PRODUCT.name().toLowerCase(), productDao.getProduct(getProductId(request)));
+        request.setAttribute(ProductDetailsPageParameters.CART.name().toLowerCase(), cartService.getCart(request));
+        if (request.getRequestURI().contains(ProductDetailsPageParameters.PRICEHISTORY.name().toLowerCase())) {
             request.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
@@ -55,10 +56,10 @@ public class ProductDetailsPageServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/product/" + getProductId(request) + "?message=Added to cart successfully");
         } catch (NumberFormatException | ParseException e) {
             message = "Not a number";
-            request.setAttribute("error", message);
+            request.setAttribute(ProductDetailsPageParameters.ERROR.name().toLowerCase(),message);
             doGet(request, response);
         } catch (OutOfStockException e) {
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute(ProductDetailsPageParameters.ERROR.name().toLowerCase(), e.getMessage());
             doGet(request, response);
         }
     }
