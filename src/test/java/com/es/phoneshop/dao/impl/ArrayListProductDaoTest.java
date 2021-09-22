@@ -1,4 +1,4 @@
-package com.es.phoneshop.model;
+package com.es.phoneshop.dao.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;

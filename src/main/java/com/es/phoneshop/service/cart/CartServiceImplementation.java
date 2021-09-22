@@ -1,8 +1,10 @@
-package com.es.phoneshop.model.cart;
+package com.es.phoneshop.service.cart;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.exceptions.OutOfStockException;
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,30 +12,30 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class DefaultCartService implements CartService {
+public class CartServiceImplementation implements CartService {
 
     private ProductDao productDao;
-    private static volatile DefaultCartService defaultCartService;
-    private static final String CART_SESSION_ATTRIBUTE = DefaultCartService.class.getName() + ".cart";
+    private static volatile CartServiceImplementation cartServiceImplementation;
+    private static final String CART_SESSION_ATTRIBUTE = CartServiceImplementation.class.getName() + ".cart";
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock = readWriteLock.readLock();
     private Lock writeLock = readWriteLock.writeLock();
 
-    private DefaultCartService() {
+    private CartServiceImplementation() {
         productDao = ArrayListProductDao.getArrayListProductDao();
     }
 
-    public static DefaultCartService getDefaultCartService() {
-        DefaultCartService result = defaultCartService;
+    public static CartServiceImplementation getDefaultCartService() {
+        CartServiceImplementation result = cartServiceImplementation;
         if (result != null) {
             return result;
         }
-        synchronized (DefaultCartService.class) {
-            if (defaultCartService == null) {
-                defaultCartService = new DefaultCartService();
+        synchronized (CartServiceImplementation.class) {
+            if (cartServiceImplementation == null) {
+                cartServiceImplementation = new CartServiceImplementation();
             }
-            return defaultCartService;
+            return cartServiceImplementation;
         }
     }
 

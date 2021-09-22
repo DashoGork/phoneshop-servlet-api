@@ -1,11 +1,12 @@
-package com.es.phoneshop.model.cart;
+package com.es.phoneshop.service.cart;
 
-import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.exceptions.OutOfStockException;
-import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
+import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.viewHistory.ViewHistory;
+import com.es.phoneshop.service.cart.CartService;
+import com.es.phoneshop.service.cart.CartServiceImplementation;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Currency;
 
 import static org.junit.Assert.*;
@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultCartServiceTest {
+public class CartServiceImplementationTest {
 
     @Mock
     HttpServletRequest request;
@@ -54,7 +54,7 @@ public class DefaultCartServiceTest {
         servletContextEvent = new ServletContextEvent(servletContext);
         when(servletContextEvent.getServletContext().getInitParameter("initParamDemoDataListener")).thenReturn("true");
         demoDataContextServletListener.contextInitialized(servletContextEvent);
-        cartService = DefaultCartService.getDefaultCartService();
+        cartService = CartServiceImplementation.getDefaultCartService();
         Currency usd = Currency.getInstance("USD");
         product = new Product("test", "test", new BigDecimal(150), usd, 40, "test");
         productToAdd1 = new Product(2l, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg");

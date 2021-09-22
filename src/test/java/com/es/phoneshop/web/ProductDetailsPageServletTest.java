@@ -5,7 +5,7 @@ import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.CartService;
+import com.es.phoneshop.service.cart.CartService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

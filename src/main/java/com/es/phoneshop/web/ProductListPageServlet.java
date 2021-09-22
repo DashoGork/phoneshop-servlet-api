@@ -2,8 +2,8 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductListPageParameters;
-import com.es.phoneshop.model.viewHistory.ViewHistoryService;
-import com.es.phoneshop.model.viewHistory.ViewHistoryServiceImplementation;
+import com.es.phoneshop.service.ViewHistory.ViewHistoryService;
+import com.es.phoneshop.service.ViewHistory.ViewHistoryServiceImplementation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

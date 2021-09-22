@@ -3,12 +3,11 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
-import com.es.phoneshop.enums.ProductListPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
-import com.es.phoneshop.model.cart.CartService;
-import com.es.phoneshop.model.cart.DefaultCartService;
-import com.es.phoneshop.model.viewHistory.ViewHistoryService;
-import com.es.phoneshop.model.viewHistory.ViewHistoryServiceImplementation;
+import com.es.phoneshop.service.cart.CartService;
+import com.es.phoneshop.service.cart.CartServiceImplementation;
+import com.es.phoneshop.service.ViewHistory.ViewHistoryService;
+import com.es.phoneshop.service.ViewHistory.ViewHistoryServiceImplementation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +27,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         productDao = ArrayListProductDao.getArrayListProductDao();
-        cartService = DefaultCartService.getDefaultCartService();
+        cartService = CartServiceImplementation.getDefaultCartService();
         viewHistoryService = ViewHistoryServiceImplementation.getViewHistoryServiceImplementation();
     }
 
