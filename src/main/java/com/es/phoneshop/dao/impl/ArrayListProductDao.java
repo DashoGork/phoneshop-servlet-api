@@ -7,7 +7,6 @@ import com.es.phoneshop.enums.SortOptions;
 import com.es.phoneshop.enums.SortOrder;
 
 
-import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -120,7 +119,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts(String name) throws InvalidParameterException {
+    public List<Product> findProducts(String name) throws IllegalArgumentException {
         readLock.lock();
         try {
             if (name != null) {
@@ -141,7 +140,7 @@ public class ArrayListProductDao implements ProductDao {
                 }).collect(Collectors.toList());
                 return productList;
             }
-            throw new InvalidParameterException();
+            throw new IllegalArgumentException();
         } finally {
             readLock.unlock();
         }
@@ -149,7 +148,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts(String name, String sortField, String sortOrder) throws InvalidParameterException {
+    public List<Product> findProducts(String name, String sortField, String sortOrder) throws IllegalArgumentException {
         readLock.lock();
         try {
             if (name != null) {
@@ -163,7 +162,7 @@ public class ArrayListProductDao implements ProductDao {
                     } else if (SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
                         comparator = priceComparator;
                     } else {
-                        throw new InvalidParameterException("Invalid sort field.");
+                        throw new IllegalArgumentException("Invalid sort field "+sortField);
                     }
                     listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                         @Override

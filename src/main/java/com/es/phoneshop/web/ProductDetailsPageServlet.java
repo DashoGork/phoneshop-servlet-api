@@ -36,7 +36,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         viewHistoryService.add(viewHistoryService.getViewHistory(request), productDao.getProduct(getProductId(request)));
         request.setAttribute(ProductDetailsPageParameters.PRODUCT.name().toLowerCase(), productDao.getProduct(getProductId(request)));
         request.setAttribute(ProductDetailsPageParameters.CART.name().toLowerCase(), cartService.getCart(request));
-        if (request.getRequestURI().contains(ProductDetailsPageParameters.PRICEHISTORY.name().toLowerCase())) {
+        if (request.getRequestURI().contains(ProductDetailsPageParameters.PRICE_HISTORY.name().toLowerCase())) {
             request.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);

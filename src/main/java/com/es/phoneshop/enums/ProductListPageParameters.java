@@ -4,6 +4,6 @@ public enum ProductListPageParameters {
     QUERY,
     SORT,
     ORDER,
-    VIEWHISTORY,
+    VIEW_HISTORY,
     PRODUCTS
 }

@@ -4,6 +4,6 @@ public enum ProductDetailsPageParameters {
     QUANTITY,
     PRODUCT,
     CART,
-    PRICEHISTORY,
+    PRICE_HISTORY,
     ERROR
 }
