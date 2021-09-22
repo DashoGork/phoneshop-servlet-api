@@ -4,7 +4,9 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.viewHistory.ViewHistory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Deque;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -55,11 +57,11 @@ public class ViewHistoryServiceImplementation implements ViewHistoryService {
     public void add(ViewHistory history, Product product) {
         writeLock.lock();
         try {
-            List<Product> viewHistory = history.getViewHistory();
+            Queue<Product> viewHistory = history.getViewHistory();
             if (!viewHistory.contains(product)) {
-                history.getViewHistory().add(0, product);
+                history.getViewHistory().add(product);
                 if (history.getViewHistory().size() > 3) {
-                    history.getViewHistory().remove(3);
+                    history.getViewHistory().poll();
                 }
             }
         } finally {

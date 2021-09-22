@@ -3,21 +3,21 @@ package com.es.phoneshop.model.viewHistory;
 import com.es.phoneshop.model.product.Product;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Queue;
 
 public class ViewHistory {
-    private List<Product> productHistory;
+    private Queue<Product> productHistoryEntities;
 
     public ViewHistory() {
-        this.productHistory = new LinkedList<>();
+        this.productHistoryEntities = new LinkedList<>();
     }
 
     public void addProductInHistory(Product product) {
-        productHistory.add(product);
+        productHistoryEntities.add(product);
     }
 
-    public List<Product> getViewHistory() {
-        return productHistory;
+    public Queue<Product> getViewHistory() {
+        return productHistoryEntities;
     }
 
 }
