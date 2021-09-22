@@ -15,4 +15,20 @@ public class CartItem {
     public String toString() {
         return product.getDescription() + " " + quantity;
     }
+
+    public Product getProduct(){
+        return product;
+    }
+
+    public int getQuantity(){
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

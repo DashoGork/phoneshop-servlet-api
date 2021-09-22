@@ -53,7 +53,7 @@
                                       currencySymbol="${product.currency.symbol}"/>
                 </td>
                 <td class="error">
-                   <input name="quantity" value="${not empty param.error? param.quantity : 1}">
+                   <input type="number" min="1" name="quantity" value="${not empty param.error? param.quantity : 1}">
                     <button>Add to cart</button>
                     <c:if test="${not empty error}">
                         ${error}

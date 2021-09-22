@@ -37,7 +37,7 @@ public class ViewHistoryServiceImplementation implements ViewHistoryService {
     }
 
     @Override
-    public synchronized ViewHistory getViewHistory(HttpServletRequest request) {
+    public ViewHistory getViewHistory(HttpServletRequest request) {
         readLock.lock();
         try {
             ViewHistory viewHistory = (ViewHistory) request.getSession().getAttribute(VIEW_HISTORY_SESSION_ATTRIBUTE);

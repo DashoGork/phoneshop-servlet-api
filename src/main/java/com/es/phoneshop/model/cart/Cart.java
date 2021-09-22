@@ -1,5 +1,7 @@
 package com.es.phoneshop.model.cart;
 
+import com.es.phoneshop.model.product.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,14 @@ public class Cart {
 
     public void setItem(CartItem cartItem) {
         items.add(cartItem);
+    }
+
+    public List<Product> getProducts(){
+        List<Product> productsFromCart=new ArrayList<>();
+        for (CartItem cartItem: items) {
+            productsFromCart.add(cartItem.getProduct());
+        }
+        return productsFromCart;
     }
 
     @Override

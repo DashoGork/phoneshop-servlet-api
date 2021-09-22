@@ -45,7 +45,8 @@ public class CartServiceImplementation implements CartService {
         try {
             Cart cart = (Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
             if (cart == null) {
-                request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, new Cart());
+                cart=new Cart();
+                request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, cart);
             }
             return cart;
         } finally {
@@ -60,13 +61,25 @@ public class CartServiceImplementation implements CartService {
             Product productFromDb = productDao.getProduct(product.getId());
             if (productFromDb.getStock() < quantity) {
                 throw new OutOfStockException("Not enough stock.");
-            } else {
-                CartItem cartItem = new CartItem(productDao.getProduct(product.getId()), quantity);
+            }
+            else {
+                if(cart.getProducts().contains(productFromDb)){
+                    getCartItemFromCart(cart,productFromDb).addQuantity(quantity);
+                }else{
+                    CartItem cartItem = new CartItem(productFromDb, quantity);
+                    productFromDb.setStock(productFromDb.getStock() - quantity);
+                    cart.getItems().add(cartItem);
+                }
                 productFromDb.setStock(productFromDb.getStock() - quantity);
-                cart.getItems().add(cartItem);
             }
         } finally {
             writeLock.unlock();
         }
+    }
+
+    private CartItem getCartItemFromCart(Cart cart,Product product){
+        return cart.getItems().stream()
+                .filter((cartItemFromStream -> product.equals(cartItemFromStream.getProduct()))).
+                findFirst().orElse(null);
     }
 }
