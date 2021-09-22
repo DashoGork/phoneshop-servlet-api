@@ -4,8 +4,6 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.viewHistory.ViewHistory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Deque;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;

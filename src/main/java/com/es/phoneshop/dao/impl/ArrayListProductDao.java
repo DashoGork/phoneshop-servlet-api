@@ -54,7 +54,7 @@ public class ArrayListProductDao implements ProductDao {
                         findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id = %d  can't be found.", id)));
                 return requiredProduct;
             } else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("id is null");
         } finally {
             readLock.unlock();
         }
@@ -140,7 +140,7 @@ public class ArrayListProductDao implements ProductDao {
                 }).collect(Collectors.toList());
                 return productList;
             }
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("searching field is null");
         } finally {
             readLock.unlock();
         }
