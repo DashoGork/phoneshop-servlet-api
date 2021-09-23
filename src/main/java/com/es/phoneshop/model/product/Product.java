@@ -30,7 +30,7 @@ public class Product {
         this.currency = currency;
         this.stock = stock;
         this.imageUrl = imageUrl;
-        this.priceHistory =new PriceHistory();
+        this.priceHistory = new PriceHistory();
         this.priceHistory.setPriceHistory(priceHistory);
     }
 

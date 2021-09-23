@@ -32,8 +32,8 @@ public class DemoDataContextServletListener implements ServletContextListener {
     private List<Product> defaultProductList() {
         List<Product> defaultProductList = new ArrayList<>();
         Map<GregorianCalendar, BigDecimal> priceHistory = new HashMap<>();
-        priceHistory.put(new GregorianCalendar(2017,10,20), BigDecimal.valueOf(600));
-        priceHistory.put(new GregorianCalendar(2019,10,22), BigDecimal.valueOf(500));
+        priceHistory.put(new GregorianCalendar(2017, 10, 20), BigDecimal.valueOf(600));
+        priceHistory.put(new GregorianCalendar(2019, 10, 22), BigDecimal.valueOf(500));
         Currency usd = Currency.getInstance("USD");
         defaultProductList.add(new Product(1l, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg", priceHistory));
         defaultProductList.add(new Product(2l, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg", priceHistory));

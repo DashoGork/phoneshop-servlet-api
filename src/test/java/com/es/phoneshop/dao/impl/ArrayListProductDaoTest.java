@@ -1,9 +1,11 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.dao.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
+import com.es.phoneshop.model.product.Product;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,7 +57,7 @@ public class ArrayListProductDaoTest {
     @Test
     public void getProduct() {
         try {
-            assertEquals(productDao.getProduct(0L),
+            Assert.assertEquals(productDao.getProduct(0L),
                     new Product(0L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
         } catch (ProductNotFoundException e) {
             e.printStackTrace();

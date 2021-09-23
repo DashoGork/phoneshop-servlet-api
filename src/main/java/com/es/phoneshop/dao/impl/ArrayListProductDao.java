@@ -7,7 +7,6 @@ import com.es.phoneshop.enums.SortOptions;
 import com.es.phoneshop.enums.SortOrder;
 
 
-import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -55,7 +54,7 @@ public class ArrayListProductDao implements ProductDao {
                         findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id = %d  can't be found.", id)));
                 return requiredProduct;
             } else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("id is null");
         } finally {
             readLock.unlock();
         }
@@ -120,7 +119,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts(String name) throws InvalidParameterException {
+    public List<Product> findProducts(String name) throws IllegalArgumentException {
         readLock.lock();
         try {
             if (name != null) {
@@ -141,7 +140,7 @@ public class ArrayListProductDao implements ProductDao {
                 }).collect(Collectors.toList());
                 return productList;
             }
-            throw new InvalidParameterException();
+            throw new IllegalArgumentException("searching field is null");
         } finally {
             readLock.unlock();
         }
@@ -149,27 +148,33 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public List<Product> findProducts(String name, String sortField, String sortOrder) throws InvalidParameterException {
+    public List<Product> findProducts(String name, String sortField, String sortOrder) throws IllegalArgumentException {
         readLock.lock();
         try {
-            List<Product> listToSort = findProducts(name);
-            Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
-            Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
-            Comparator comparator;
-            if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
-                comparator = descriptionComparator;
-            } else if(SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
-                comparator = priceComparator;
-            }else{
-                throw new InvalidParameterException("Invalid sort field.");
-            }
-            listToSort = listToSort.stream().sorted(new Comparator<Product>() {
-                @Override
-                public int compare(Product o1, Product o2) {
-                    return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder.toUpperCase(Locale.ROOT)).getValue();
+            if (name != null) {
+                List<Product> listToSort = findProducts(name);
+                if (sortField != null & sortOrder != null) {
+                    Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
+                    Comparator<Product> descriptionComparator = Comparator.comparing(product -> product.getDescription());
+                    Comparator comparator;
+                    if (SortOptions.DESCRIPTION.name().equals(sortField.toUpperCase(Locale.ROOT))) {
+                        comparator = descriptionComparator;
+                    } else if (SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
+                        comparator = priceComparator;
+                    } else {
+                        throw new IllegalArgumentException("Invalid sort field "+sortField);
+                    }
+                    listToSort = listToSort.stream().sorted(new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return comparator.compare(o1, o2) * SortOrder.valueOf(sortOrder.toUpperCase(Locale.ROOT)).getValue();
+                        }
+                    }).collect(Collectors.toList());
                 }
-            }).collect(Collectors.toList());
-            return listToSort;
+                return listToSort;
+            } else{
+                return findProducts();
+            }
         } finally {
             readLock.unlock();
         }

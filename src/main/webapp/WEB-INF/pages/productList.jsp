@@ -35,6 +35,33 @@
                 <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a>
                 </td>
                 <td class="price">
+                    <a href="${pageContext.servletContext.contextPath}/price_history/${product.id}">
+                        <fmt:formatNumber value="${product.price}" type="currency"
+                                          currencySymbol="${product.currency.symbol}"/>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+<p>
+    Recently viewed
+</p>
+    <table>
+        <thead>
+        <tr>
+            <td>Image</td>
+            <td>Description</td>
+            <td class="price">Price</td>
+        </tr>
+        </thead>
+        <c:forEach var="product" items="${view_history.getViewHistory()}">
+            <tr>
+                <td>
+                    <img class="product-tile" src=${product.imageUrl}>
+                </td>
+                <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a>
+                </td>
+                <td class="price">
                     <a href="${pageContext.servletContext.contextPath}/priceHistory/${product.id}">
                         <fmt:formatNumber value="${product.price}" type="currency"
                                           currencySymbol="${product.currency.symbol}"/>
