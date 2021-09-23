@@ -48,14 +48,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String message;
         try {
-            NumberFormat format = NumberFormat.getInstance(request.getLocale());
-            int quantity = format.parse(request.getParameter(ProductDetailsPageParameters.QUANTITY.name().toLowerCase()))
-                    .intValue();
-            cartService.add(cartService.getCart(request), productDao.getProduct(getProductId(request)), quantity);
+            int parsedQuantity = parseQuantity(request);
+            cartService.add(cartService.getCart(request), productDao.getProduct(getProductId(request)), parsedQuantity);
             response.sendRedirect(request.getContextPath() + "/product/" + getProductId(request) + "?message=Added to cart successfully");
         } catch (NumberFormatException | ParseException e) {
             message = "Not a number";
-            request.setAttribute(ProductDetailsPageParameters.ERROR.name().toLowerCase(),message);
+            request.setAttribute(ProductDetailsPageParameters.ERROR.name().toLowerCase(), message);
             doGet(request, response);
         } catch (OutOfStockException e) {
             request.setAttribute(ProductDetailsPageParameters.ERROR.name().toLowerCase(), e.getMessage());
@@ -66,5 +64,14 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private long getProductId(HttpServletRequest request) {
         String productId = request.getPathInfo();
         return Long.valueOf(productId.substring(1));
+    }
+
+    private int parseQuantity(HttpServletRequest request) throws ParseException {
+        NumberFormat format = NumberFormat.getInstance(request.getLocale());
+        String quantity = request.getParameter(ProductDetailsPageParameters.QUANTITY.name().toLowerCase());
+        if (quantity.matches("\\d+")) {
+            return format.parse(quantity)
+                    .intValue();
+        } else throw new ParseException("Not a number", 0);
     }
 }
