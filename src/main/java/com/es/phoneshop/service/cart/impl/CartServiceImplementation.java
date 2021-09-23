@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.cart;
+package com.es.phoneshop.service.cart.impl;
 
 import com.es.phoneshop.dao.ProductDao;
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
@@ -6,6 +6,7 @@ import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.service.cart.CartService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.locks.Lock;

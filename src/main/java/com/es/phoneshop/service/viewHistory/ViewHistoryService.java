@@ -1,4 +1,4 @@
-package com.es.phoneshop.service.ViewHistory;
+package com.es.phoneshop.service.viewHistory;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.viewHistory.ViewHistory;

@@ -5,9 +5,9 @@ import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.service.cart.CartService;
-import com.es.phoneshop.service.cart.CartServiceImplementation;
-import com.es.phoneshop.service.ViewHistory.ViewHistoryService;
-import com.es.phoneshop.service.ViewHistory.ViewHistoryServiceImplementation;
+import com.es.phoneshop.service.cart.impl.CartServiceImplementation;
+import com.es.phoneshop.service.viewHistory.ViewHistoryService;
+import com.es.phoneshop.service.viewHistory.impl.ViewHistoryServiceImplementation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

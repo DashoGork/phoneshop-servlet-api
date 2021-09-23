@@ -1,7 +1,8 @@
-package com.es.phoneshop.service.ViewHistory;
+package com.es.phoneshop.service.viewHistory.impl;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.viewHistory.ViewHistory;
+import com.es.phoneshop.service.viewHistory.ViewHistoryService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Queue;

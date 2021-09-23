@@ -2,8 +2,7 @@ package com.es.phoneshop.service.viewHistory;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.viewHistory.ViewHistory;
-import com.es.phoneshop.service.ViewHistory.ViewHistoryService;
-import com.es.phoneshop.service.ViewHistory.ViewHistoryServiceImplementation;
+import com.es.phoneshop.service.viewHistory.impl.ViewHistoryServiceImplementation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
