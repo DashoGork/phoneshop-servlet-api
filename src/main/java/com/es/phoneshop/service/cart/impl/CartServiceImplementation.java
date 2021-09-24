@@ -9,9 +9,11 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.cart.CartService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 public class CartServiceImplementation implements CartService {
 
@@ -71,6 +73,7 @@ public class CartServiceImplementation implements CartService {
                     cart.getItems().add(cartItem);
                 }
                 productFromDb.setStock(productFromDb.getStock() - quantity);
+                recalculateCart(cart);
             }
         } finally {
             writeLock.unlock();
@@ -88,10 +91,42 @@ public class CartServiceImplementation implements CartService {
                 CartItem itemFromCart = getCartItemFromCart(cart, productFromDb);
                 productFromDb.setStock(productFromDb.getStock() + itemFromCart.getQuantity() - quantity);
                 getCartItemFromCart(cart, productFromDb).setQuantity(quantity);
+                recalculateCart(cart);
             }
         } finally {
             writeLock.unlock();
         }
+    }
+
+    @Override
+    public void delete(Cart cart, Product product) {
+        writeLock.lock();
+        try {
+            CartItem cartItem = getCartItemFromCart(cart, product);
+            update(cart, product, -cartItem.getQuantity());
+            int index = cart.getItems().indexOf(cartItem);
+            cart.getItems().remove(index);
+            recalculateCart(cart);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    private void recalculateCart(Cart cart){
+        cart.setTotalQuantity(cart.getItems().stream()
+                .map(CartItem::getQuantity)
+                .collect(Collectors.summingInt(item->item.intValue())));
+
+//        BigDecimal fd= new BigDecimal(0);
+//        for (CartItem item: cart.getItems()) {
+//            fd.add(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+//        }
+//        cart.setTotalPrice(fd);
+
+        cart.setTotalPrice(cart.getItems().stream().
+               map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO,(x,y)->x.add(y),BigDecimal::add)
+        );
+
     }
 
     private CartItem getCartItemFromCart(Cart cart, Product product) {

@@ -60,6 +60,15 @@
   </servlet-mapping>
 
 
+  <servlet-mapping>
+    <servlet-name>deleteCart</servlet-name>
+    <url-pattern>/cart/deleteCartItem/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>deleteCart</servlet-name>
+    <servlet-class>com.es.phoneshop.web.DeleteCartItemServlet</servlet-class>
+  </servlet>
 
 
 <!--    <error-page>-->

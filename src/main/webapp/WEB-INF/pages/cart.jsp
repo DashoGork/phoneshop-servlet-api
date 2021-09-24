@@ -8,6 +8,10 @@
     <p>
             ${cart}
     </p>
+    <p>
+        Total quantity
+        ${cart.totalPrice}
+    </p>
     <p class="success">
         <c:if test="${not empty param.message}">
             <c:if  test="${empty error}">
@@ -31,6 +35,7 @@
                 </td>
                 <td class="quantity">Quantity
                 </td>
+
             </tr>
             </thead>
             <c:forEach var="item" items="${cart.items}">
@@ -66,10 +71,18 @@
                             </c:if>
                         </p>
                     </td>
+                    <td>
+                        <button form="deleteCartItem" formaction="${pageContext.servletContext.contextPath}/cart/deleteCartItem/${item.product.id}">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
         <button value="">Update</button>
+
     </form>
+
+    <form id="deleteCartItem" action="post"></form>
 
 </tags:master>
