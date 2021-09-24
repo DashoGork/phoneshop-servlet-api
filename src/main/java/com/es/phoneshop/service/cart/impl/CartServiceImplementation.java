@@ -46,7 +46,7 @@ public class CartServiceImplementation implements CartService {
         try {
             Cart cart = (Cart) request.getSession().getAttribute(CART_SESSION_ATTRIBUTE);
             if (cart == null) {
-                cart=new Cart();
+                cart = new Cart();
                 request.getSession().setAttribute(CART_SESSION_ATTRIBUTE, cart);
             }
             return cart;
@@ -62,11 +62,10 @@ public class CartServiceImplementation implements CartService {
             Product productFromDb = productDao.getProduct(product.getId());
             if (productFromDb.getStock() < quantity) {
                 throw new OutOfStockException("Not enough stock.");
-            }
-            else {
-                if(cart.getProducts().contains(productFromDb)){
-                    getCartItemFromCart(cart,productFromDb).addQuantity(quantity);
-                }else{
+            } else {
+                if (cart.getProducts().contains(productFromDb)) {
+                    getCartItemFromCart(cart, productFromDb).addQuantity(quantity);
+                } else {
                     CartItem cartItem = new CartItem(productFromDb, quantity);
                     productFromDb.setStock(productFromDb.getStock() - quantity);
                     cart.getItems().add(cartItem);
@@ -78,9 +77,26 @@ public class CartServiceImplementation implements CartService {
         }
     }
 
-    private CartItem getCartItemFromCart(Cart cart,Product product){
+    @Override
+    public void update(Cart cart, Product product, int quantity) throws OutOfStockException {
+        writeLock.lock();
+        try {
+            Product productFromDb = productDao.getProduct(product.getId());
+            if (productFromDb.getStock() < quantity) {
+                throw new OutOfStockException("Not enough stock.");
+            } else {
+                CartItem itemFromCart = getCartItemFromCart(cart, productFromDb);
+                productFromDb.setStock(productFromDb.getStock() + itemFromCart.getQuantity() - quantity);
+                getCartItemFromCart(cart, productFromDb).setQuantity(quantity);
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    private CartItem getCartItemFromCart(Cart cart, Product product) {
         return cart.getItems().stream()
-                .filter((cartItemFromStream -> product.equals(cartItemFromStream.getProduct()))).
+                .filter((cartItemFromStream -> product.getId().equals(cartItemFromStream.getProduct().getId()))).
                 findFirst().orElse(null);
     }
 }
