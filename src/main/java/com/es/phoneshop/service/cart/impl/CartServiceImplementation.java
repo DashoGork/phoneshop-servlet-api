@@ -89,9 +89,13 @@ public class CartServiceImplementation implements CartService {
                 throw new OutOfStockException("Not enough stock.");
             } else {
                 CartItem itemFromCart = getCartItemFromCart(cart, productFromDb);
-                productFromDb.setStock(productFromDb.getStock() + itemFromCart.getQuantity() - quantity);
-                getCartItemFromCart(cart, productFromDb).setQuantity(quantity);
-                recalculateCart(cart);
+                if(itemFromCart!=null){
+                    productFromDb.setStock(productFromDb.getStock() + itemFromCart.getQuantity() - quantity);
+                    getCartItemFromCart(cart, productFromDb).setQuantity(quantity);
+                    recalculateCart(cart);
+                }else {
+                    add(cart,productFromDb,quantity);
+                }
             }
         } finally {
             writeLock.unlock();
@@ -116,12 +120,6 @@ public class CartServiceImplementation implements CartService {
         cart.setTotalQuantity(cart.getItems().stream()
                 .map(CartItem::getQuantity)
                 .collect(Collectors.summingInt(item->item.intValue())));
-
-//        BigDecimal fd= new BigDecimal(0);
-//        for (CartItem item: cart.getItems()) {
-//            fd.add(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
-//        }
-//        cart.setTotalPrice(fd);
 
         cart.setTotalPrice(cart.getItems().stream().
                map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO,(x,y)->x.add(y),BigDecimal::add)

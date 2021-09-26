@@ -3,76 +3,91 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-  <display-name>Phoneshop servlet api training</display-name>
+    <display-name>Phoneshop servlet api training</display-name>
 
-  <context-param>
-    <param-name>initParamDemoDataListener</param-name>
-    <param-value>true</param-value>
-  </context-param>
+    <context-param>
+        <param-name>initParamDemoDataListener</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
-  <error-page>
-    <location>/WEB-INF/pages/errorProductNotFound.jsp</location>
-    <exception-type>com.es.phoneshop.exceptions.ProductNotFoundException</exception-type>
-  </error-page>
+    <error-page>
+        <location>/WEB-INF/pages/errorProductNotFound.jsp</location>
+        <exception-type>com.es.phoneshop.exceptions.ProductNotFoundException</exception-type>
+    </error-page>
 
-  <error-page>
-    <location>/WEB-INF/pages/error.jsp</location>
-    <error-code>500</error-code>
-  </error-page>
+    <error-page>
+        <location>/WEB-INF/pages/error.jsp</location>
+        <error-code>500</error-code>
+    </error-page>
 
-  <listener>
-    <listener-class>com.es.phoneshop.listener.DemoDataContextServletListener</listener-class>
-  </listener>
+    <listener>
+        <listener-class>com.es.phoneshop.listener.DemoDataContextServletListener</listener-class>
+    </listener>
 
-  <servlet>
-    <servlet-name>productList</servlet-name>
-    <servlet-class>com.es.phoneshop.web.ProductListPageServlet</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>cart</servlet-name>
-    <url-pattern>/cart</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>productList</servlet-name>
+        <servlet-class>com.es.phoneshop.web.ProductListPageServlet</servlet-class>
+    </servlet>
 
-  <servlet>
-    <servlet-name>cart</servlet-name>
-    <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
-  </servlet>
+    <servlet-mapping>
+        <servlet-name>cart</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>productList</servlet-name>
-    <url-pattern>/products</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>cart</servlet-name>
+        <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>product</servlet-name>
-    <url-pattern>/product/*</url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>productList</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
 
-  <servlet>
-    <servlet-name>product</servlet-name>
-    <servlet-class>com.es.phoneshop.web.ProductDetailsPageServlet</servlet-class>
-  </servlet>
+    <servlet-mapping>
+        <servlet-name>product</servlet-name>
+        <url-pattern>/product/*</url-pattern>
+    </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>product</servlet-name>
-    <url-pattern>/price_history/*</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>product</servlet-name>
+        <servlet-class>com.es.phoneshop.web.ProductDetailsPageServlet</servlet-class>
+    </servlet>
 
-
-  <servlet-mapping>
-    <servlet-name>deleteCart</servlet-name>
-    <url-pattern>/cart/deleteCartItem/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>deleteCart</servlet-name>
-    <servlet-class>com.es.phoneshop.web.DeleteCartItemServlet</servlet-class>
-  </servlet>
+    <servlet-mapping>
+        <servlet-name>product</servlet-name>
+        <url-pattern>/price_history/*</url-pattern>
+    </servlet-mapping>
 
 
-<!--    <error-page>-->
-<!--      <location>pages/errorProductNotFound.jsp</location>-->
-<!--      <exception-type>com.es.phoneshop.exceptions.ProductNotFoundException</exception-type>-->
-<!--    </error-page>-->
+    <servlet-mapping>
+        <servlet-name>deleteCart</servlet-name>
+        <url-pattern>/cart/deleteCartItem/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteCart</servlet-name>
+        <servlet-class>com.es.phoneshop.web.DeleteCartItemServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>miniCart</servlet-name>
+        <url-pattern>/cart/miniCart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>miniCart</servlet-name>
+        <servlet-class>com.es.phoneshop.web.MiniCartServlet</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>addToCart</servlet-name>
+        <url-pattern>/add_to_cart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addToCart</servlet-name>
+        <servlet-class>com.es.phoneshop.web.AddToCartServlet</servlet-class>
+    </servlet>
 </web-app>

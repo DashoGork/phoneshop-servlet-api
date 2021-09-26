@@ -48,15 +48,15 @@ public class CartPageServlet extends HttpServlet {
                 int quantity = parseQuantity(request, quantityFromRequest[index]);
                 cartService.update(cartService.getCart(request), productDao.getProduct(productId), quantity);
             } catch (NumberFormatException | ParseException e) {
-                errorMessage.put(Long.valueOf(productIdFromRequest[index]),"Not a number.");
+                errorMessage.put(Long.valueOf(productIdFromRequest[index]), "Not a number.");
             } catch (OutOfStockException e) {
-                errorMessage.put(Long.valueOf(productIdFromRequest[index]),e.getMessage());
+                errorMessage.put(Long.valueOf(productIdFromRequest[index]), e.getMessage());
             }
         }
 
-        if(errorMessage.isEmpty()){
-            response.sendRedirect(request.getContextPath()+"/cart?message=Added to cart");
-        }else {
+        if (errorMessage.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/cart?message=Added to cart");
+        } else {
             request.setAttribute(CartParameters.ERRORS.name().toLowerCase(), errorMessage);
             doGet(request, response);
         }

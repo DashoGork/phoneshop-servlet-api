@@ -32,4 +32,9 @@ public class ProductListPageServlet extends HttpServlet {
         request.setAttribute(ProductListPageParameters.PRODUCTS.name().toLowerCase(), arrayListProductDao.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req,resp);
+    }
 }

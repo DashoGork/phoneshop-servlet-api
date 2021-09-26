@@ -10,11 +10,11 @@
     </p>
     <p>
         Total quantity
-        ${cart.totalPrice}
+            ${cart.totalPrice}
     </p>
     <p class="success">
         <c:if test="${not empty param.message}">
-            <c:if  test="${empty error}">
+            <c:if test="${empty error}">
                 ${param.message}
             </c:if>
         </c:if>
@@ -58,21 +58,18 @@
                         <c:set var="error" value="${errors[item.product.id]}"/>
 
 
-                        <input name="quantity"  value="${not empty error ? param.quantity : item.quantity}" class="quantity" />
+                        <input name="quantity" value="${not empty error ? param.quantity : item.quantity}"
+                               class="quantity"/>
                         <input type="hidden" name="product_id" value="${item.product.id}">
                         <p class="error">
                             <c:if test="${not empty error}">
                                 ${error}
                             </c:if>
                         </p>
-                        <p class="success">
-                            <c:if test="${empty error}">
-                                Added successfully
-                            </c:if>
-                        </p>
                     </td>
                     <td>
-                        <button form="deleteCartItem" formaction="${pageContext.servletContext.contextPath}/cart/deleteCartItem/${item.product.id}">
+                        <button form="deleteCartItem"
+                                formaction="${pageContext.servletContext.contextPath}/cart/deleteCartItem/${item.product.id}">
                             Delete
                         </button>
                     </td>
