@@ -5,6 +5,7 @@ import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.CartParameters;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
+import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.service.cart.CartService;
 import com.es.phoneshop.service.cart.impl.CartServiceImplementation;
 
@@ -32,7 +33,7 @@ public class CartPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ProductDetailsPageParameters.CART.name().toLowerCase(), cartService.getCart(request));
+        request.setAttribute(ProductDetailsPageParameters.CART.name().toLowerCase(),cartService.getCart(request) );
         request.getRequestDispatcher("/WEB-INF/pages/cart.jsp").forward(request, response);
     }
 

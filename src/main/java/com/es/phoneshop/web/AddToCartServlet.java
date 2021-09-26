@@ -29,12 +29,12 @@ public class AddToCartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productIdFromRequest = request.getParameter("product_id");
-        String[] quantityFromRequest = request.getParameterValues("quantity");
+        String[] quantityFromRequest = request.getParameterValues(CartParameters.QUANTITY.name().toLowerCase());
+        String productIdFromRequest = request.getParameter(CartParameters.PRODUCT_ID.name()).toLowerCase();
         String errorMessage = null;
         try {
             Long productId = Long.valueOf(productIdFromRequest);
-            int quantity = parseQuantity(request, quantityFromRequest[productId.intValue() - 1]);
+            int quantity = parseQuantity(request, quantityFromRequest[productId.intValue()]);
             cartService.update(cartService.getCart(request), productDao.getProduct(productId), quantity);
         } catch (NumberFormatException | ParseException e) {
             errorMessage = "Not a number.";
