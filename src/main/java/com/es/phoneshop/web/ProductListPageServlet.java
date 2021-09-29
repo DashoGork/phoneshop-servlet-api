@@ -2,6 +2,7 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.dao.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductListPageParameters;
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.viewHistory.ViewHistoryService;
 import com.es.phoneshop.service.viewHistory.impl.ViewHistoryServiceImplementation;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class ProductListPageServlet extends HttpServlet {
 
@@ -29,6 +31,7 @@ public class ProductListPageServlet extends HttpServlet {
         String sortField = request.getParameter(ProductListPageParameters.SORT.name().toLowerCase());
         String sortOrder = request.getParameter(ProductListPageParameters.ORDER.name().toLowerCase());
         request.setAttribute(ProductListPageParameters.VIEW_HISTORY.name().toLowerCase(), viewHistoryService.getViewHistory(request));
+        List<Product> f=arrayListProductDao.findProducts(query, sortField, sortOrder);
         request.setAttribute(ProductListPageParameters.PRODUCTS.name().toLowerCase(), arrayListProductDao.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }

@@ -57,9 +57,10 @@
                     </a>
                 </td>
                 <td>
-                    <button form="addQuantity" formaction="${pageContext.servletContext.contextPath}/add_to_cart?product_id=${product.id}">
+                    <button form="addQuantity"
+                            formaction="${pageContext.servletContext.contextPath}/add_to_cart?product_id=${product.id}">
                         <input type="hidden" name="product_id" value="${product.id}" form="addQuantity">
-                        Update
+                        Add to cart
                     </button>
                 </td>
 

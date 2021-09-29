@@ -47,7 +47,7 @@ public class CartPageServlet extends HttpServlet {
             try {
                 Long productId = Long.valueOf(productIdFromRequest[index]);
                 int quantity = parseQuantity(request, quantityFromRequest[index]);
-                cartService.update(cartService.getCart(request), productDao.getProduct(productId), quantity);
+                cartService.update(cartService.getCart(request), productId, quantity);
             } catch (NumberFormatException | ParseException e) {
                 errorMessage.put(Long.valueOf(productIdFromRequest[index]), "Not a number.");
             } catch (OutOfStockException e) {

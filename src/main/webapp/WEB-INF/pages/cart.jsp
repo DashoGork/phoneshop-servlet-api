@@ -21,7 +21,10 @@
     </p>
     <p class="error">
         <c:if test="${not empty errors}">
-            ${errors}
+            <c:set var="error" value="${errors}"/>
+            <c:forEach var="item" items="${cart.items}">
+                ${errors[item.product.id]}
+            </c:forEach>
         </c:if>
     </p>
     <form method="post" action="${pageContext.servletContext.contextPath}/cart">
