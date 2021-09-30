@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<%--<jsp:useBean id="cart" type="java.util.ArrayList" scope="request"/>--%>
 <tags:master pageTitle="Product List">
     <p>
             ${cart}
@@ -79,8 +78,10 @@
                 </tr>
             </c:forEach>
         </table>
-        <button value="">Update</button>
 
+        <c:if test="${!cart.items.isEmpty()}">
+        <button value="">Update</button>
+        </c:if>
     </form>
 
     <form id="deleteCartItem" action="post"></form>
