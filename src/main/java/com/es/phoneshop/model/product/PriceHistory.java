@@ -1,11 +1,14 @@
 package com.es.phoneshop.model.product;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PriceHistory {
+public class PriceHistory implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Map<GregorianCalendar, BigDecimal> priceHistory;
 
     public PriceHistory() {

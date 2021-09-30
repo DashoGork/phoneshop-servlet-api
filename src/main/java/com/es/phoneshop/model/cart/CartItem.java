@@ -2,7 +2,12 @@ package com.es.phoneshop.model.cart;
 
 import com.es.phoneshop.model.product.Product;
 
-public class CartItem {
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public class CartItem implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Product product;
     private int quantity;
 
@@ -30,5 +35,9 @@ public class CartItem {
 
     public void addQuantity(int quantity) {
         this.quantity += quantity;
+    }
+
+    public BigDecimal getTotalPrice(){
+        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }

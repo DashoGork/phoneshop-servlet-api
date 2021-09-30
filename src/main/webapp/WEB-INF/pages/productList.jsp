@@ -8,6 +8,18 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
+    <p class="error">
+        <c:if test="${not empty errors}">
+            ${errors}
+        </c:if>
+    </p>
+    <p class="success">
+        <c:if test="${empty errors}">
+            <c:if test="${not empty success}">
+                ${success}
+            </c:if>
+        </c:if>
+    </p>
     <form>
         <input name="query" value="${param.query}">
         <button>Search</button>
@@ -20,10 +32,10 @@
                 <tags:sortList sort="description" order="asc"></tags:sortList>
                 <tags:sortList sort="description" order="desc"></tags:sortList>
             </td>
+            <td>Quantity</td>
             <td class="price">Price
                 <tags:sortList sort="price" order="asc"></tags:sortList>
                 <tags:sortList sort="price" order="desc"></tags:sortList>
-
             </td>
         </tr>
         </thead>
@@ -34,18 +46,33 @@
                 </td>
                 <td><a href="${pageContext.servletContext.contextPath}/product/${product.id}">${product.description}</a>
                 </td>
+                <td class="quantity">
+                    <input name="quantity" type="number" value="1" form="addQuantity"/>
+                    <input type="hidden" name="product_id" value="${product.id}" form="addQuantity">
+                </td>
                 <td class="price">
                     <a href="${pageContext.servletContext.contextPath}/price_history/${product.id}">
                         <fmt:formatNumber value="${product.price}" type="currency"
                                           currencySymbol="${product.currency.symbol}"/>
                     </a>
                 </td>
+                <td>
+                    <button form="addQuantity"
+                            formaction="${pageContext.servletContext.contextPath}/add_to_cart?product_id=${product.id}">
+                        <input type="hidden" name="product_id" value="${product.id}" form="addQuantity">
+                        Add to cart
+                    </button>
+                </td>
+
             </tr>
         </c:forEach>
     </table>
-<p>
-    Recently viewed
-</p>
+    <form method="post" id="addQuantity">
+
+    </form>
+    <p>
+        Recently viewed
+    </p>
     <table>
         <thead>
         <tr>

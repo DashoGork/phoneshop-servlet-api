@@ -5,6 +5,7 @@ import com.es.phoneshop.model.viewHistory.ViewHistory;
 import com.es.phoneshop.service.viewHistory.ViewHistoryService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;

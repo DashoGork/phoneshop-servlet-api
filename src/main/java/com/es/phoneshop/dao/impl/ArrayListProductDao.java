@@ -74,7 +74,7 @@ public class ArrayListProductDao implements ProductDao {
     public void save(Product product) {
         writeLock.lock();
         try {
-            if (product != null) {
+            if (product != null && product.isValid()) {
                 if (products.stream()
                         .anyMatch(productFromStream -> productFromStream.getId().equals(product.getId()))) {
                     update(product);
