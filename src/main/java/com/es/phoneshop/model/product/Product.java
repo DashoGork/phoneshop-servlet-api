@@ -1,13 +1,14 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.model.BaseModelEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Product implements Serializable {
+public class Product extends BaseModelEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
     private String code;
     private String description;
     /**
@@ -23,10 +24,11 @@ public class Product implements Serializable {
     private PriceHistory priceHistory;
 
     public Product() {
+        super();
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl, Map<GregorianCalendar, BigDecimal> priceHistory) {
-        this.id = id;
+        super(id);
         this.code = code;
         this.description = description;
         this.price = price;
@@ -38,7 +40,7 @@ public class Product implements Serializable {
     }
 
     public Product(Long id, String code, String description, BigDecimal price, Currency currency, int stock, String imageUrl) {
-        this.id = id;
+        super(id);
         this.code = code;
         this.description = description;
         this.price = price;
@@ -57,11 +59,11 @@ public class Product implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return super.getId();
     }
 
     public void setId(Long id) {
-        this.id = id;
+        super.setId(id);
     }
 
     public String getCode() {
@@ -129,18 +131,18 @@ public class Product implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return stock == product.stock && Objects.equals(id, product.id) && Objects.equals(code, product.code) && Objects.equals(description, product.description) && Objects.equals(price, product.price) && Objects.equals(currency, product.currency) && Objects.equals(imageUrl, product.imageUrl);
+        return stock == product.stock && Objects.equals(super.getId(), product.getId()) && Objects.equals(code, product.code) && Objects.equals(description, product.description) && Objects.equals(price, product.price) && Objects.equals(currency, product.currency) && Objects.equals(imageUrl, product.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, description, price, currency, stock, imageUrl);
+        return Objects.hash( code, description, price, currency, stock, imageUrl);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +

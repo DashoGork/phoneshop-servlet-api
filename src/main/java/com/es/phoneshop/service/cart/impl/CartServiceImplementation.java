@@ -1,7 +1,7 @@
 package com.es.phoneshop.service.cart.impl;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
@@ -57,7 +57,7 @@ public class CartServiceImplementation implements CartService {
     @Override
     public void add(Cart cart, Product product, int quantity) throws OutOfStockException {
         synchronized (cart) {
-            Product productFromDb = productDao.getProduct(product.getId());
+            Product productFromDb = productDao.getItem(product.getId());
             if (productFromDb.getStock() < quantity) {
                 throw new OutOfStockException("Not enough stock.");
             } else {
@@ -77,7 +77,7 @@ public class CartServiceImplementation implements CartService {
     @Override
     public void update(Cart cart, long productId, int quantity) throws OutOfStockException {
         synchronized (cart) {
-            Product productFromDb = productDao.getProduct(productId);
+            Product productFromDb = productDao.getItem(productId);
             if (productFromDb.getStock() < quantity) {
                 throw new OutOfStockException("Not enough stock.");
             } else {

@@ -81,6 +81,7 @@
 
         <c:if test="${!cart.items.isEmpty()}">
         <button value="">Update</button>
+            <button formaction="${pageContext.servletContext.contextPath}/checkout" formmethod="get"> Checkout</button>
         </c:if>
     </form>
 

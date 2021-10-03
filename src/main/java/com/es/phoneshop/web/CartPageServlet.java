@@ -1,11 +1,10 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.CartParameters;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
-import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.service.cart.CartService;
 import com.es.phoneshop.service.cart.impl.CartServiceImplementation;
 

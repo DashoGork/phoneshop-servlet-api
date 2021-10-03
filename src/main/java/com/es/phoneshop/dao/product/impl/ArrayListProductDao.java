@@ -1,6 +1,7 @@
-package com.es.phoneshop.dao.impl;
+package com.es.phoneshop.dao.product.impl;
 
-import com.es.phoneshop.dao.ProductDao;
+import com.es.phoneshop.dao.AbstractDao;
+import com.es.phoneshop.dao.product.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortOptions;
@@ -15,18 +16,19 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-public class ArrayListProductDao implements ProductDao {
+public class ArrayListProductDao extends AbstractDao<Product> implements ProductDao {
 
     private static volatile ArrayListProductDao arrayListProductDao;
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock = readWriteLock.readLock();
     private Lock writeLock = readWriteLock.writeLock();
-    private List<Product> products;
-    private long id;
+    private ArrayList<Product> products;
+    private Long id;
 
     private ArrayListProductDao() {
-        products = new ArrayList<>();
+        products = (ArrayList<Product>) super.getObjects();
+        id=super.getId();
     }
 
     public static ArrayListProductDao getArrayListProductDao() {
@@ -42,8 +44,9 @@ public class ArrayListProductDao implements ProductDao {
         }
     }
 
+
     @Override
-    public Product getProduct(Long id) throws ProductNotFoundException, IllegalArgumentException {
+    public Product getItem(Long id) throws ProductNotFoundException, IllegalArgumentException {
         readLock.lock();
         try {
             if (id != null) {
@@ -51,7 +54,7 @@ public class ArrayListProductDao implements ProductDao {
                 requiredProduct = products.stream().
                         filter((product -> id.equals(product.getId())
                                 && product.isValid())).
-                        findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id = %d  can't be found.", id)));
+                        findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id =  can't be found.", id)));
                 return requiredProduct;
             } else
                 throw new IllegalArgumentException("id is null");
@@ -71,7 +74,7 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public void save(Product product) {
+    public void saveItem(Product product) {
         writeLock.lock();
         try {
             if (product != null && product.isValid()) {
@@ -162,7 +165,7 @@ public class ArrayListProductDao implements ProductDao {
                     } else if (SortOptions.PRICE.name().equals(sortField.toUpperCase(Locale.ROOT))) {
                         comparator = priceComparator;
                     } else {
-                        throw new IllegalArgumentException("Invalid sort field "+sortField);
+                        throw new IllegalArgumentException("Invalid sort field " + sortField);
                     }
                     listToSort = listToSort.stream().sorted(new Comparator<Product>() {
                         @Override
@@ -172,7 +175,7 @@ public class ArrayListProductDao implements ProductDao {
                     }).collect(Collectors.toList());
                 }
                 return listToSort;
-            } else{
+            } else {
                 return findProducts();
             }
         } finally {

@@ -1,6 +1,6 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductListPageParameters;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.viewHistory.ViewHistoryService;

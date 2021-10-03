@@ -1,7 +1,6 @@
-package com.es.phoneshop.dao.impl;
+package com.es.phoneshop.dao.product.impl;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
 import com.es.phoneshop.model.product.Product;
@@ -57,7 +56,7 @@ public class ArrayListProductDaoTest {
     @Test
     public void getProduct() {
         try {
-            Assert.assertEquals(productDao.getProduct(0L),
+            Assert.assertEquals(productDao.getItem(0L),
                     new Product(0L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
         } catch (ProductNotFoundException e) {
             e.printStackTrace();
@@ -71,7 +70,7 @@ public class ArrayListProductDaoTest {
 
     @Test
     public void save() {
-        productDao.save(testProduct);
+        productDao.saveItem(testProduct);
         assertTrue(productDao.findProducts().contains(testProduct));
     }
 
@@ -83,14 +82,14 @@ public class ArrayListProductDaoTest {
     public void delete() throws ProductNotFoundException {
         productDao.delete(0l);
         expectedException.expect(ProductNotFoundException.class);
-        productDao.getProduct(0l);
+        productDao.getItem(0l);
     }
 
     @Test
     public void update() throws ProductNotFoundException {
-        productDao.save(testProduct);
+        productDao.saveItem(testProduct);
         productDao.update(updatedTestProduct);
-        assertTrue(productDao.getProduct(13l).getCode().equals("test1"));
+        assertTrue(productDao.getItem(13l).getCode().equals("test1"));
     }
 
     @Test
