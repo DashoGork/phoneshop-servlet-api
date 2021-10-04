@@ -2,8 +2,6 @@ package com.es.phoneshop.service.order.impl;
 
 import com.es.phoneshop.dao.order.OrderDao;
 import com.es.phoneshop.dao.order.impl.ArrayListOrderDao;
-import com.es.phoneshop.dao.product.ProductDao;
-import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.PaymentMethod;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
@@ -14,16 +12,12 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public class OrderServiceImplementation implements OrderService {
 
     private OrderDao orderDao;
     private static volatile OrderServiceImplementation orderServiceImplementation;
-    private static final String CART_SESSION_ATTRIBUTE = OrderServiceImplementation.class.getName() + ".cart";
 
     private OrderServiceImplementation() {
         orderDao = ArrayListOrderDao.getArrayListProductDao();
@@ -81,7 +75,7 @@ public class OrderServiceImplementation implements OrderService {
         return orderDao.getItem(id);
     }
 
-    private BigDecimal calculateDeliveryCost(){
+    private BigDecimal calculateDeliveryCost() {
         return new BigDecimal("10");
     }
 }

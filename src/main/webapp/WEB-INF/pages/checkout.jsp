@@ -21,15 +21,7 @@
         Total quantity
             ${order.totalQuantity}
     </p>
-    <p class="success">
-        <c:if test="${not empty param.message}">
-            <c:if test="${empty error}">
-                ${param.message}
-            </c:if>
-        </c:if>
-    </p>
     <p class="error">
-        Error
         <c:if test="${not empty errors}">
             <c:set var="error" value="${errors}"/>
             <c:forEach var="item" items="${cart.items}">

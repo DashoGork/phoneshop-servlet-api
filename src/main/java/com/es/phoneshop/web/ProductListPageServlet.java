@@ -31,13 +31,13 @@ public class ProductListPageServlet extends HttpServlet {
         String sortField = request.getParameter(ProductListPageParameters.SORT.name().toLowerCase());
         String sortOrder = request.getParameter(ProductListPageParameters.ORDER.name().toLowerCase());
         request.setAttribute(ProductListPageParameters.VIEW_HISTORY.name().toLowerCase(), viewHistoryService.getViewHistory(request));
-        List<Product> f=arrayListProductDao.findProducts(query, sortField, sortOrder);
+        List<Product> f = arrayListProductDao.findProducts(query, sortField, sortOrder);
         request.setAttribute(ProductListPageParameters.PRODUCTS.name().toLowerCase(), arrayListProductDao.findProducts(query, sortField, sortOrder));
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
     }
 }

@@ -1,7 +1,5 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.product.ProductDao;
-import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.service.cart.CartService;
 import com.es.phoneshop.service.cart.impl.CartServiceImplementation;
 

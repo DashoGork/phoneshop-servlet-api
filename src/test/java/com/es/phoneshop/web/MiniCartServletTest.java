@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;

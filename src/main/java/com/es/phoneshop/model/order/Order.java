@@ -6,6 +6,7 @@ import com.es.phoneshop.model.cart.Cart;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 public class Order extends Cart implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -90,5 +91,18 @@ public class Order extends Cart implements Serializable {
 
     public void setDeliveryCost(BigDecimal deliveryCost) {
         this.deliveryCost = deliveryCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id && Objects.equals(subtotal, order.subtotal) && Objects.equals(deliveryCost, order.deliveryCost) && Objects.equals(firstName, order.firstName) && Objects.equals(LastName, order.LastName) && Objects.equals(address, order.address) && paymentMethod == order.paymentMethod && Objects.equals(deliveryDate, order.deliveryDate) && Objects.equals(secureId, order.secureId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subtotal, deliveryCost, firstName, LastName, address, paymentMethod, deliveryDate, id, secureId);
     }
 }

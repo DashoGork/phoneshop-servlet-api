@@ -22,8 +22,7 @@ public class CartServiceImplementation implements CartService {
     private static final String CART_SESSION_ATTRIBUTE = CartServiceImplementation.class.getName() + ".cart";
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private Lock readLock = readWriteLock.readLock();
-    private Lock writeLock = readWriteLock.writeLock();
+
 
     private CartServiceImplementation() {
         productDao = ArrayListProductDao.getArrayListProductDao();
