@@ -21,11 +21,11 @@ public class CartItem implements Serializable, Cloneable {
         return product.getDescription() + " " + quantity;
     }
 
-    public Product getProduct(){
+    public Product getProduct() {
         return product;
     }
 
-    public int getQuantity(){
+    public int getQuantity() {
         return quantity;
     }
 
@@ -37,12 +37,12 @@ public class CartItem implements Serializable, Cloneable {
         this.quantity += quantity;
     }
 
-    public BigDecimal getTotalPrice(){
+    public BigDecimal getTotalPrice() {
         return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        return new CartItem(this.getProduct(), this.getQuantity());
     }
 }

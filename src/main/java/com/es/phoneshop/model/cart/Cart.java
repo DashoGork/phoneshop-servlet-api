@@ -1,6 +1,6 @@
 package com.es.phoneshop.model.cart;
 
-import com.es.phoneshop.model.BaseModelEntity;
+import com.es.phoneshop.model.BaseModel;
 import com.es.phoneshop.model.product.Product;
 
 import java.io.Serializable;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart extends BaseModelEntity implements Serializable {
+public class Cart extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<CartItem> items;

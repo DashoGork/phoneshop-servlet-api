@@ -5,7 +5,7 @@ import com.es.phoneshop.dao.order.OrderDao;
 import com.es.phoneshop.exceptions.OrderNotFoundException;
 import com.es.phoneshop.model.order.Order;
 
-public class ArrayListOrderDao extends AbstractDao<Order> implements OrderDao {
+public class ArrayListOrderDao extends AbstractDao<Order, OrderNotFoundException> implements OrderDao {
 
     private static volatile ArrayListOrderDao arrayListProductDao;
 

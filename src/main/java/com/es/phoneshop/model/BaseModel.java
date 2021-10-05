@@ -1,12 +1,12 @@
 package com.es.phoneshop.model;
 
-public class BaseModelEntity {
+public class BaseModel {
     private Long id;
 
-    public BaseModelEntity(Long id) {
+    public BaseModel(Long id) {
     }
 
-    public BaseModelEntity() {
+    public BaseModel() {
 
     }
 

@@ -151,7 +151,6 @@
                             <option value="${param['payment_method']}">${param['payment_method']}</option>
                         </c:if>
                         <c:forEach var="PaymentMethod" items="${payment_method}">
-                            <option></option>
                             <option value="${PaymentMethod}">${PaymentMethod}</option>
                         </c:forEach>
                     </select>

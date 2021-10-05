@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.enums.CartParameters;
 import com.es.phoneshop.enums.CheckoutPageParameters;
 import com.es.phoneshop.enums.PaymentMethod;
+import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.model.product.Product;
@@ -60,9 +61,7 @@ public class CheckoutPageServlet extends HttpServlet {
         setDateMethod(request, order, errorMessage);
 
         if (errorMessage.isEmpty()) {
-            for (Product product : cart.getProducts()) {
-                cartService.delete(cart, product.getId());
-            }
+            request.getSession().removeAttribute(ProductDetailsPageParameters.CART.name().toLowerCase());
             orderService.placeOrder(order);
             response.sendRedirect(request.getContextPath() + "/order/overview/" + order.getSecureId());
         } else {
