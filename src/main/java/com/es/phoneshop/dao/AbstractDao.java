@@ -34,7 +34,7 @@ public abstract class AbstractDao<T extends BaseModel, E extends BaseModelNotFou
         this.id = id;
     }
 
-    public T getItem(Long id) {
+    public T getItem(Long id) throws E{
         readLock.lock();
         try {
             if (id != null) {

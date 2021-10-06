@@ -44,25 +44,6 @@ public class ArrayListProductDao extends AbstractDao<Product, ProductNotFoundExc
         }
     }
 
-
-    @Override
-    public Product getItem(Long id) throws ProductNotFoundException, IllegalArgumentException {
-        readLock.lock();
-        try {
-            if (id != null) {
-                Product requiredProduct;
-                requiredProduct = products.stream().
-                        filter((product -> id.equals(product.getId())
-                                && product.isValid())).
-                        findFirst().orElseThrow(() -> new ProductNotFoundException(String.format("Product with id =  can't be found.", id)));
-                return requiredProduct;
-            } else
-                throw new IllegalArgumentException("id is null");
-        } finally {
-            readLock.unlock();
-        }
-    }
-
     @Override
     public List<Product> findProducts() {
         readLock.lock();
