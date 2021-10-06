@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.enums.ProductDetailsPageParameters;
 import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.service.cart.CartService;
@@ -33,8 +33,8 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        viewHistoryService.add(viewHistoryService.getViewHistory(request), productDao.getProduct(getProductId(request)));
-        request.setAttribute(ProductDetailsPageParameters.PRODUCT.name().toLowerCase(), productDao.getProduct(getProductId(request)));
+        viewHistoryService.add(viewHistoryService.getViewHistory(request), productDao.getItem(getProductId(request)));
+        request.setAttribute(ProductDetailsPageParameters.PRODUCT.name().toLowerCase(), productDao.getItem(getProductId(request)));
         request.setAttribute(ProductDetailsPageParameters.CART.name().toLowerCase(), cartService.getCart(request));
         if (request.getRequestURI().contains(ProductDetailsPageParameters.PRICE_HISTORY.name().toLowerCase())) {
             request.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(request, response);
@@ -49,7 +49,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         String message;
         try {
             int parsedQuantity = parseQuantity(request);
-            cartService.add(cartService.getCart(request), productDao.getProduct(getProductId(request)), parsedQuantity);
+            cartService.add(cartService.getCart(request), productDao.getItem(getProductId(request)), parsedQuantity);
             response.sendRedirect(request.getContextPath() + "/product/" + getProductId(request) + "?message=Added to cart successfully");
         } catch (NumberFormatException | ParseException e) {
             message = "Not a number";

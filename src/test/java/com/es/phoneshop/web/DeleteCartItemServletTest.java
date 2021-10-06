@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.listener.DemoDataContextServletListener;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

@@ -1,7 +1,7 @@
 package com.es.phoneshop.listener;
 
-import com.es.phoneshop.dao.ProductDao;
-import com.es.phoneshop.dao.impl.ArrayListProductDao;
+import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.dao.product.impl.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 
 import javax.servlet.ServletContextEvent;
@@ -18,7 +18,7 @@ public class DemoDataContextServletListener implements ServletContextListener {
         boolean init = Boolean.valueOf(servletContextEvent.getServletContext().getInitParameter("initParamDemoDataListener"));
         if (init) {
             productDao = ArrayListProductDao.getArrayListProductDao();
-            defaultProductList().stream().forEach((product -> productDao.save(product)));
+            defaultProductList().stream().forEach((product -> productDao.saveItem(product)));
         }
 
     }
