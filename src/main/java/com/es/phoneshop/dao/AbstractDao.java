@@ -10,7 +10,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class AbstractDao<T extends BaseModel, E extends BaseModelNotFoundException> {
+public abstract class AbstractDao<T extends BaseModel> {
 
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock = readWriteLock.readLock();
@@ -34,7 +34,7 @@ public abstract class AbstractDao<T extends BaseModel, E extends BaseModelNotFou
         this.id = id;
     }
 
-    public T getItem(Long id) throws E {
+    public T getItem(Long id) {
         readLock.lock();
         try {
             if (id != null) {

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-public class ArrayListProductDao extends AbstractDao<Product, ProductNotFoundException> implements ProductDao {
+public class ArrayListProductDao extends AbstractDao<Product> implements ProductDao {
 
     private static volatile ArrayListProductDao arrayListProductDao;
 
