@@ -34,7 +34,7 @@ public abstract class AbstractDao<T extends BaseModel, E extends BaseModelNotFou
         this.id = id;
     }
 
-    public T getItem(Long id) throws E{
+    public T getItem(Long id) throws E {
         readLock.lock();
         try {
             if (id != null) {
@@ -54,13 +54,8 @@ public abstract class AbstractDao<T extends BaseModel, E extends BaseModelNotFou
         writeLock.lock();
         try {
             if (object != null) {
-                if (objects.stream()
-                        .anyMatch(objectFromStream -> objectFromStream.getId().equals(object.getId()))) {
-
-                } else {
-                    object.setId(id++);
-                    objects.add(object);
-                }
+                object.setId(id++);
+                objects.add(object);
             }
         } finally {
             writeLock.unlock();
