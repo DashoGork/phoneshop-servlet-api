@@ -2,12 +2,15 @@ package com.es.phoneshop.dao.product.impl;
 
 import com.es.phoneshop.dao.AbstractDao;
 import com.es.phoneshop.dao.product.ProductDao;
+import com.es.phoneshop.enums.SortMatching;
 import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.enums.SortOptions;
 import com.es.phoneshop.enums.SortOrder;
 
 
+import java.math.BigDecimal;
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -28,7 +31,7 @@ public class ArrayListProductDao extends AbstractDao<Product> implements Product
 
     private ArrayListProductDao() {
         products = (ArrayList<Product>) super.getObjects();
-        id=super.getId();
+        id = super.getId();
     }
 
     public static ArrayListProductDao getArrayListProductDao() {
@@ -128,7 +131,50 @@ public class ArrayListProductDao extends AbstractDao<Product> implements Product
         } finally {
             readLock.unlock();
         }
+    }
 
+    private List<Product> findProductsMatching(List<Product> products, String name, SortMatching sortMatching) {
+        readLock.lock();
+        try {
+            if (sortMatching.name().toLowerCase().equals("any")) {
+                return products;
+            } else {
+                String words[] = name.split(" ");
+                return products = products.stream().filter((product -> (getNumberOfWordsInjections(words, product.getDescription()) == words.length))).collect(Collectors.toList());
+            }
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+
+    @Override
+    public List<Product> findProducts(String name, BigDecimal minPrice, BigDecimal maxPrice, SortMatching match) throws InvalidParameterException {
+        readLock.lock();
+        try {
+            if(name.isEmpty() || name==null){
+                return findProducts();
+            }
+            if(minPrice.equals(new BigDecimal(-1)) & maxPrice.equals(new BigDecimal(-1))){
+                List<Product> products = findProducts(name);
+                return findProductsMatching(products, name, match);
+            }
+            List<Product> products = findProducts(name);
+            products = findProductsMatching(products, name, match);
+            products =products.stream()
+                    .filter((product ->(product.getPrice().compareTo(minPrice) >= 0 && product.getPrice().compareTo(maxPrice) <= 0))).collect(Collectors.toList());
+            Comparator<Product> comparator = Comparator.comparing(product -> product.getPrice());
+            products = products.stream().sorted(new Comparator<Product>() {
+                @Override
+                public int compare(Product o1, Product o2) {
+                    return comparator.compare(o1, o2);
+                }
+            }).collect(Collectors.toList());
+
+            return products;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
